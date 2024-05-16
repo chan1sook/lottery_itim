@@ -1,0 +1,35 @@
+"use client";
+
+import type { NextPage } from "next";
+import { useAccount } from "wagmi";
+import { Digit4LotteryContainer } from "~~/components/lottery-containers/DetailGameContainer";
+import { LotteryCowndownContainer } from "~~/components/lottery-containers/LotteryCountdownContainer";
+import { Digit4LotteryRewardContainer } from "~~/components/lottery-containers/RewardContainer";
+import { StatusBadge } from "~~/components/lottery-containers/StatusBadge";
+import { ManageLotteryContainer } from "~~/components/subpage/ManageLotteryContainer";
+import { LotteryBasicContractName } from "~~/hooks/useLotteryContractData";
+import { useLastestLotteryData } from "~~/hooks/useLotteryData";
+
+const ManageLottery: NextPage = () => {
+  const contractName: LotteryBasicContractName = "ItimLottery4Digits";
+  const { address } = useAccount();
+  const lotteryData = useLastestLotteryData(contractName);
+
+  return (
+    <>
+      <ManageLotteryContainer adminAccount={address} lotteryData={lotteryData}>
+        <div className="w-full flex flex-col flex-wrap md:flex-row gap-2 items-center justify-center">
+          <Digit4LotteryContainer>
+            <div className="flex flex-col gap-y-2 items-center">
+              <LotteryCowndownContainer lotteryData={lotteryData} />
+              <StatusBadge state={lotteryData.state} />
+            </div>
+          </Digit4LotteryContainer>
+          <Digit4LotteryRewardContainer contractData={lotteryData.contractData} />
+        </div>
+      </ManageLotteryContainer>
+    </>
+  );
+};
+
+export default ManageLottery;

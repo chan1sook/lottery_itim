@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import fs from "fs";
 import path from "path";
 import { hardhat } from "viem/chains";
@@ -76,10 +79,19 @@ const getContractData = async (address: string) => {
   return { bytecode, assembly };
 };
 
-const AddressPage = async ({ params }: PageProps) => {
+const AddressPage = ({ params }: PageProps) => {
   const address = params?.address as string;
-  const contractData: { bytecode: string; assembly: string } | null = await getContractData(address);
-  return <AddressComponent address={address} contractData={contractData} />;
+  const contractData = useRef<{ bytecode: string; assembly: string } | null>(null);
+
+  useEffect(() => {
+    getContractData(address)
+      .then(val => {
+        contractData.current = val;
+      })
+      .catch(console.error);
+  }, [address]);
+
+  return <AddressComponent address={address} contractData={contractData.current} />;
 };
 
 export default AddressPage;

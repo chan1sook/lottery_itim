@@ -10,7 +10,7 @@ const baseUrl = process.env.VERCEL_URL
 const imageUrl = `${baseUrl}/thumbnail.jpg`;
 
 const title = "Itim Lottery";
-const titleTemplate = "%s | Scaffold-ETH 2";
+const titleTemplate = "%s | Itim Lottery";
 const description = "Itim Lottery | Built with 🏗 Scaffold-ETH 2";
 
 export const metadata: Metadata = {

@@ -82,6 +82,21 @@ export const useScaffoldWriteContract = <TContractName extends ContractName>(
     }
   };
 
+  const sendContractWriteAsyncTx2 = async <
+    TFunctionName extends ExtractAbiFunctionNames<ContractAbi<TContractName>, "nonpayable" | "payable">,
+  >(
+    variables: scaffoldWriteContractVariables<TContractName, TFunctionName>,
+    options?: scaffoldWriteContractOptions,
+  ) => {
+    try {
+      await sendContractWriteAsyncTx(variables, options);
+      return true;
+    } catch (err) {
+      console.error(`⚡ ~ ${variables.functionName} |`, variables.args, err);
+      return false;
+    }
+  };
+
   const sendContractWriteTx = <
     TContractName extends ContractName,
     TFunctionName extends ExtractAbiFunctionNames<ContractAbi<TContractName>, "nonpayable" | "payable">,
@@ -126,5 +141,7 @@ export const useScaffoldWriteContract = <TContractName extends ContractName>(
     writeContractAsync: sendContractWriteAsyncTx,
     // Overwrite wagmi's writeContract
     writeContract: sendContractWriteTx,
+    // extended
+    writeContractAsync2: sendContractWriteAsyncTx2,
   };
 };
