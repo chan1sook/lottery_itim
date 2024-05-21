@@ -10,8 +10,8 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 /**
  * Itim Lottery Base Contract
  * Author: chan1sook
- * Revision: 1
- * Last Updated: 2024-05-14 22:12
+ * Revision: 2
+ * Last Updated: 2024-05-21 13:00
  */
 contract ItimLotteryBase is AccessControl {
 	address public immutable owner;
@@ -32,6 +32,7 @@ contract ItimLotteryBase is AccessControl {
 		uint256 expiredTime;
 		uint256 drawTime;
 		uint256 drawNumber;
+		uint256 buyCount;
 	}
 	uint256 public lastestLotteryId;
 	mapping(uint256 => ItimLotteryData) public lotteryData;
@@ -42,8 +43,10 @@ contract ItimLotteryBase is AccessControl {
 		bool claimed;
 	}
 	mapping(uint256 => mapping(uint256 => ItimLotteryBuyData)) public lotteryBuyData;
-	mapping(uint256 => mapping(address => uint256)) public lotteryBuyerCount;
 	mapping(uint256 => mapping(address => uint256[])) public lotteryBuyerData;
+
+	uint256 public lotteryRoomCapacity = 1;
+	uint256[] public lotteryRoomActives;
 
 	constructor(address _owner, address[] memory _admins, address _tokenContractAccount, address _treasuryAccount, uint256 _randomSeed) {
 		owner = _owner;
@@ -60,6 +63,10 @@ contract ItimLotteryBase is AccessControl {
 	modifier isAdminOrOwner {
 		require(msg.sender == owner || hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin or owner");
 		_;
+	}
+
+	function lotteryRoomActivesLength() public view returns (uint256) {
+		return lotteryRoomActives.length;
 	}
 	
 	/// Admin Setter Section
@@ -79,8 +86,34 @@ contract ItimLotteryBase is AccessControl {
 	function setLotteryReward(uint256 _reward) public isAdminOrOwner {
 		lotteryReward = _reward;
 	}
+	
+	function setLotteryRoomCap(uint256 _capacity) public isAdminOrOwner {
+		lotteryRoomCapacity = _capacity;
+	}
 
 	/// Change Lottery Section
+	function _startLotteryCmd(uint256 _id, uint256 _expiredTime) private {
+		lotteryData[_id].state = ItimLotteryState.OPENING;
+		lotteryData[_id].expiredTime = _expiredTime;
+
+		require(lotteryRoomActives.length < lotteryRoomCapacity, "Reach maximum room capacity");
+		lotteryRoomActives.push(_id);
+	}
+
+	function _closeLotteryCmd(uint256 _id) private {
+		uint256 length = lotteryRoomActives.length;
+		bool arrShifted = false;
+        for (uint256 i = 0; i < length - 1; i++) {
+			if(!arrShifted && lotteryRoomActives[i] == _id) {
+				// mark arr shifted
+				arrShifted = true;
+			}
+			if(arrShifted) {
+				lotteryRoomActives[i] = lotteryRoomActives[i + 1];
+			}
+        }
+        lotteryRoomActives.pop();
+	}
 
 	function declareLottery(uint256 _id) public isAdminOrOwner {
 		require(lotteryData[_id].state == ItimLotteryState.NOT_STARTED, "Invalid lottery state");
@@ -93,28 +126,27 @@ contract ItimLotteryBase is AccessControl {
 	
 	function startBuyingLottery(uint256 _id, uint256 _expiredTime) public isAdminOrOwner {
 		require(lotteryData[_id].state == ItimLotteryState.DECLARED, "Invalid lottery state");
-		lotteryData[_id].state = ItimLotteryState.OPENING;
-		lotteryData[_id].expiredTime = _expiredTime;
+		_startLotteryCmd(_id, _expiredTime);
 	}
 	
 	function stopBuyingLottery(uint256 _id) public isAdminOrOwner {
 		require(lotteryData[_id].state == ItimLotteryState.OPENING, "Invalid lottery state");
 		lotteryData[_id].state = ItimLotteryState.EXPIRED;
+		_closeLotteryCmd(_id);
 	}
 
 	function drawRandomNumber(uint256 _id) public isAdminOrOwner {
 		require(lotteryData[_id].state == ItimLotteryState.EXPIRED, "Invalid lottery state");
 		lotteryData[_id].state = ItimLotteryState.DRAWED;
 		lotteryData[_id].drawTime = block.timestamp;
-		lotteryData[_id].drawNumber = _RollRng();
+		lotteryData[_id].drawNumber = _rollRng();
 	}
 
 	/// Fast Method
 
 	function fastStartLottery(uint256 _id, uint256 _expiredTime) public isAdminOrOwner {
 		require(lotteryData[_id].state == ItimLotteryState.NOT_STARTED, "Invalid lottery state");
-		lotteryData[_id].state = ItimLotteryState.OPENING;
-		lotteryData[_id].expiredTime = _expiredTime;
+		_startLotteryCmd(_id, _expiredTime);
 		
 		if(_id > lastestLotteryId) {
 			lastestLotteryId = _id;
@@ -125,7 +157,8 @@ contract ItimLotteryBase is AccessControl {
 		require(lotteryData[_id].state == ItimLotteryState.OPENING, "Invalid lottery state");
 		lotteryData[_id].state = ItimLotteryState.DRAWED;
 		lotteryData[_id].drawTime = block.timestamp;
-		lotteryData[_id].drawNumber = _RollRng();
+		lotteryData[_id].drawNumber = _rollRng();
+		_closeLotteryCmd(_id);
 	}
 
 
@@ -141,23 +174,31 @@ contract ItimLotteryBase is AccessControl {
 		return _number >= lotteryMinNumber && _number <= lotteryMaxNumber;
 	}
 
-	function _RollRng() private returns (uint256) {
+	function _rollRng() private returns (uint256) {
 		randomSeed = uint256(keccak256(abi.encodePacked(block.timestamp, randomSeed)));
 		uint256 value = lotteryMinNumber + (randomSeed % (lotteryMaxNumber - lotteryMinNumber));
 		console.log("Actual Number:", value);
 		return value;
 	}
 
+	/// Misc
+	function isLotteryRoomFull(uint256 _id) virtual public view returns (bool) {
+		return lotteryData[_id].buyCount >= (lotteryMaxNumber -  lotteryMinNumber + 1);
+	}
+
 	/// Buyer Section
+	function lotteryBuyCount(uint256 _id) public view returns (uint256) {
+		return lotteryBuyerData[_id][msg.sender].length;
+	}
 
 	function buyLottery(uint256 _id, uint256 _number) public {
 		require(lotteryData[_id].state == ItimLotteryState.OPENING, "Invalid lottery state");
 		require(isValidNumber(_number), "Invalid number");
 		require(!lotteryBuyData[_id][_number].owned, "Lottery owned");
+		lotteryData[_id].buyCount++;
 		lotteryBuyData[_id][_number].owned = true;
 		lotteryBuyData[_id][_number].buyer = msg.sender;
 		lotteryBuyData[_id][_number].buyTime = block.timestamp;
-		lotteryBuyerCount[_id][msg.sender] += 1;
 		lotteryBuyerData[_id][msg.sender].push(_number);
 		
 		IERC20(tokenContractAccount).transferFrom(msg.sender, treasuryAccount, lotteryCost);

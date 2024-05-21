@@ -47,7 +47,13 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   }
   console.log("TreasuryAccount balance:", await itemTokenContract.balanceOf(treasuryAccount));
 
-  const contractNames = ["ItimLottery2Digits", "ItimLottery3Digits", "ItimLottery4Digits"];
+  const contractNames = [
+    "ItimLottery2Digits",
+    "ItimLottery3Digits",
+    "ItimLottery4Digits",
+    "ItimLottery12Numbers",
+    "ItimLotteryOddEven",
+  ];
   const lotteryAdmins = minters;
   for (const name of contractNames) {
     const seed = BigInt(`0x${randomBytes(32).toString("hex")}`);

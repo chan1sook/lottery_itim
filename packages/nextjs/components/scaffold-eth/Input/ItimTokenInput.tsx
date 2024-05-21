@@ -66,7 +66,7 @@ export const ItimTokenInput = ({
       placeholder={placeholder}
       onChange={handleChangeNumber}
       disabled={disabled}
-      suffix={<span className="pl-4 -mr-2 text-gray-700 self-center">{itimSymbol}</span>}
+      suffix={<span className="pr-4 -ml-2 text-gray-700 self-center">{itimSymbol}</span>}
     />
   );
 };

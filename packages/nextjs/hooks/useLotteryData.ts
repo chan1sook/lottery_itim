@@ -10,11 +10,13 @@ export enum LotteryState {
 }
 
 export type LotteryData = {
+  ready: boolean;
   contractData: LotteryContractData;
   id: bigint;
   state: LotteryState;
   expired?: Date;
   drawNumber?: string;
+  buyCount: bigint;
 };
 
 export function getPrettyLotteryState(state: LotteryState) {
@@ -57,14 +59,19 @@ export const useLotteryData = ({ id, contractName = "ItimLottery2Digits" }: Lott
     Array.isArray(lotteryData) && typeof lotteryData[3] === "bigint" && lotteryState == LotteryState.DRAWED
       ? lotteryData[3].toString()
       : undefined;
+  const buyCount = Array.isArray(lotteryData) && typeof lotteryData[4] === "bigint" ? lotteryData[4] : BigInt(0);
 
   const response: LotteryData = {
+    ready: false,
     contractData: useLotteryContractData(contractName),
-    id: typeof id === "bigint" ? id : BigInt(0),
+    id: id,
     state: lotteryState,
     expired: expiredTime,
     drawNumber: drawNumber,
+    buyCount: buyCount,
   };
+
+  response.ready = Array.isArray(lotteryData);
 
   return response;
 };

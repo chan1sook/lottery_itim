@@ -4,27 +4,40 @@ import { BuyLotteryContainer } from "./_components/BuyLotteryContainer";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { ConnectAddressContainer } from "~~/components/ConnectAddressContainer";
+import { ActiveRoomContainer } from "~~/components/lottery-containers/ActiveRoomContainer";
 import {
   Digit2LotteryContainer,
   Digit3LotteryContainer,
   Digit4LotteryContainer,
+  OddEvenLotteryContainer,
+  TwelveNumbersLotteryContainer,
 } from "~~/components/lottery-containers/DetailGameContainer";
 import { LotteryCowndownContainer } from "~~/components/lottery-containers/LotteryCountdownContainer";
 import { useIsLotteryContractAdmin } from "~~/hooks/useLotteryContractData";
 import { useLastestLotteryData } from "~~/hooks/useLotteryData";
 
 const Home: NextPage = () => {
-  const [lottery2DigitsData, lottery3DigitsData, lottery4DigitsData] = [
+  const [lottery2DigitsData, lottery3DigitsData, lottery4DigitsData, lottery12NumbersData, lotteryOddEvenData] = [
     useLastestLotteryData("ItimLottery2Digits"),
     useLastestLotteryData("ItimLottery3Digits"),
     useLastestLotteryData("ItimLottery4Digits"),
+    useLastestLotteryData("ItimLottery12Numbers"),
+    useLastestLotteryData("ItimLotteryOddEven"),
   ];
   const { address } = useAccount();
 
-  const [isLottery2DigitsAdmin, isLottery3DigitsAdmin, isLottery4DigitsAdmin] = [
+  const [
+    isLottery2DigitsAdmin,
+    isLottery3DigitsAdmin,
+    isLottery4DigitsAdmin,
+    isLottery12NumbersAdmin,
+    isLotteryOddEvenAdmin,
+  ] = [
     useIsLotteryContractAdmin("ItimLottery2Digits", address),
     useIsLotteryContractAdmin("ItimLottery3Digits", address),
     useIsLotteryContractAdmin("ItimLottery4Digits", address),
+    useIsLotteryContractAdmin("ItimLottery12Numbers", address),
+    useIsLotteryContractAdmin("ItimLotteryOddEven", address),
   ];
 
   return (
@@ -74,7 +87,30 @@ const Home: NextPage = () => {
             >
               <LotteryCowndownContainer lotteryData={lottery4DigitsData} />
             </Digit4LotteryContainer>
-            {/* TODO two remain game*/}
+            <TwelveNumbersLotteryContainer
+              footer={
+                <BuyLotteryContainer
+                  id={lottery12NumbersData.id.toString()}
+                  gameName="twelveNum"
+                  lotteryData={lottery12NumbersData}
+                  adminMode={isLottery12NumbersAdmin}
+                />
+              }
+            >
+              <ActiveRoomContainer lotteryData={lottery12NumbersData} />
+            </TwelveNumbersLotteryContainer>
+            <OddEvenLotteryContainer
+              footer={
+                <BuyLotteryContainer
+                  id={lotteryOddEvenData.id.toString()}
+                  gameName="oddEven"
+                  lotteryData={lotteryOddEvenData}
+                  adminMode={isLotteryOddEvenAdmin}
+                />
+              }
+            >
+              <ActiveRoomContainer lotteryData={lotteryOddEvenData} />
+            </OddEvenLotteryContainer>
           </div>
         </div>
       </div>

@@ -13,11 +13,11 @@ type ClaimPageWithIdContainerProp = {
   children?: ReactNode;
   claimerAccount?: string;
   lotteryNumberData: LotteryNumberData;
-  lotteryNumber: string;
-  gameId: string;
+  lotteryNumber: bigint;
+  gameId: bigint;
   isBusy?: boolean;
-  setLotteryNumber: Dispatch<SetStateAction<string>>;
-  setGameId: Dispatch<SetStateAction<string>>;
+  setLotteryNumber: Dispatch<SetStateAction<bigint>>;
+  setGameId: Dispatch<SetStateAction<bigint>>;
   doClaimLottery: () => void;
 };
 
@@ -41,11 +41,11 @@ export const ClaimPageWithIdContainer = ({
   const isError = !claimerAccount || !isOwned || lotteryNumberData.claimed || isNumberInvalid || !isCanClaim;
 
   function setLotteryNumberValue(val: bigint | string) {
-    setLotteryNumber(val.toString());
+    setLotteryNumber(typeof val === "bigint" ? val : BigInt(val));
   }
 
   function setGameIdValue(val: bigint | string) {
-    setGameId(val.toString());
+    setGameId(typeof val === "bigint" ? val : BigInt(val));
   }
 
   return (

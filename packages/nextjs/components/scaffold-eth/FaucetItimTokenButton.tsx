@@ -43,7 +43,7 @@ export const ItimTokenFaucetButton = () => {
 
     await writeContractAsync({
       functionName: "tapFaucet",
-      args: [parseEther("1000")],
+      args: [parseEther("100000")],
     });
   };
 

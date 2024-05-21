@@ -9,8 +9,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 /**
  * Itim Lottery Token Contract
  * Author: chan1sook
- * Revision: 1
- * Last Updated: 2024-05-14 22:12
+ * Revision: 2
+ * Last Updated: 2024-05-21 13:00
  */
 contract ItimLotteryToken is ERC20, AccessControl {
 	address public immutable owner;

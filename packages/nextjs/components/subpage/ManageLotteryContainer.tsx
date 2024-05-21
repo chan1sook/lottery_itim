@@ -2,13 +2,15 @@ import { ChangeEvent, ReactNode, useState } from "react";
 import { ConnectAddressContainer } from "../ConnectAddressContainer";
 import { LotteryButton } from "../LotteryButton";
 import { LotteryNumberRangeContainer } from "../lottery-containers/LotteryNumberRangeContainer";
-import { AddressInput } from "../scaffold-eth";
+import { AddressInput, IntegerInput } from "../scaffold-eth";
 import { ItimTokenInput } from "../scaffold-eth/Input/ItimTokenInput";
 import dayjs from "dayjs";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { formatEther, isAddress, parseEther } from "viem";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import { useIsLotteryContractAdmin } from "~~/hooks/useLotteryContractData";
-import { LotteryData, LotteryState } from "~~/hooks/useLotteryData";
+import { useLotteryActiveRoomAt } from "~~/hooks/useLotteryActiveRoomAt";
+import { LotteryContractData, useIsLotteryContractAdmin } from "~~/hooks/useLotteryContractData";
+import { LotteryData, LotteryState, useLotteryData } from "~~/hooks/useLotteryData";
 
 type LabelFromAdminModifierProp = {
   admin?: string;
@@ -24,89 +26,17 @@ type GameActionButtonProp = {
   isWaitWriting: boolean;
   adminAccount?: string;
   lotteryData: LotteryData;
-  onDeclareLotteryGame: (id: bigint) => void;
-  onStartLotteryGame: (id: bigint) => void;
-  onEndLotteryGame: (id: bigint) => void;
-  onRollNumber: (id: bigint) => void;
+  onFastStartLotteryGame: (id: bigint) => void;
+  onFastStopLotteryGame: (id: bigint) => void;
 };
 
 const GameActionButton = ({
   lotteryData,
   adminAccount,
   isWaitWriting,
-  onDeclareLotteryGame,
-  onStartLotteryGame,
-  onEndLotteryGame,
-  onRollNumber,
-}: GameActionButtonProp) => {
-  const contractName = lotteryData.contractData.contractName;
-  const isAdmin = useIsLotteryContractAdmin(contractName, adminAccount);
-
-  function _getLabel(label: string) {
-    return labelFromAdminModifier({ admin: adminAccount, isAdmin, label });
-  }
-
-  return (
-    <>
-      {lotteryData.state == LotteryState.NOT_STARTED && (
-        <LotteryButton
-          label={_getLabel("Create game")}
-          isError={!isAdmin}
-          loading={isWaitWriting}
-          onClick={() => onDeclareLotteryGame(lotteryData.id)}
-        />
-      )}
-      {lotteryData.state == LotteryState.DECLARED && (
-        <LotteryButton
-          label={_getLabel("Start Lottery")}
-          isError={!isAdmin}
-          loading={isWaitWriting}
-          onClick={() => onStartLotteryGame(lotteryData.id)}
-        />
-      )}
-      {lotteryData.state == LotteryState.OPENING && (
-        <LotteryButton
-          label={_getLabel("Close Lottery")}
-          isError={!isAdmin}
-          loading={isWaitWriting}
-          onClick={() => onEndLotteryGame(lotteryData.id)}
-        />
-      )}
-      {lotteryData.state == LotteryState.EXPIRED && (
-        <LotteryButton
-          label={_getLabel("Roll Number")}
-          isError={!isAdmin}
-          loading={isWaitWriting}
-          onClick={() => onRollNumber(lotteryData.id)}
-        />
-      )}
-      {lotteryData.state == LotteryState.DRAWED && (
-        <LotteryButton
-          label={_getLabel("New game")}
-          isError={!isAdmin}
-          loading={isWaitWriting}
-          onClick={() => onDeclareLotteryGame(lotteryData.id + BigInt(1))}
-        />
-      )}
-    </>
-  );
-};
-
-type GameActionButton2Prop = {
-  isWaitWriting: boolean;
-  adminAccount?: string;
-  lotteryData: LotteryData;
-  onFastStartLotteryGame: (id: bigint) => void;
-  onFastStopLotteryGame: (id: bigint) => void;
-};
-
-const GameActionButton2 = ({
-  lotteryData,
-  adminAccount,
-  isWaitWriting,
   onFastStartLotteryGame,
   onFastStopLotteryGame,
-}: GameActionButton2Prop) => {
+}: GameActionButtonProp) => {
   const contractName = lotteryData.contractData.contractName;
   const isAdmin = useIsLotteryContractAdmin(contractName, adminAccount);
 
@@ -126,19 +56,69 @@ const GameActionButton2 = ({
       )}
       {lotteryData.state == LotteryState.OPENING && (
         <LotteryButton
-          label={_getLabel("Close Lottery")}
+          label={_getLabel(`Close Lottery`)}
           isError={!isAdmin}
           loading={isWaitWriting}
           onClick={() => onFastStopLotteryGame(lotteryData.id)}
         />
       )}
-      {lotteryData.state == LotteryState.DRAWED && (
-        <LotteryButton
-          label={_getLabel("New game")}
-          isError={!isAdmin}
-          loading={isWaitWriting}
-          onClick={() => onFastStartLotteryGame(lotteryData.id + BigInt(1))}
-        />
+    </>
+  );
+};
+
+type CloseActionContainerProp = {
+  adminAccount?: string;
+  contractData: LotteryContractData;
+  isWaitWriting: boolean;
+  onFastStopLotteryGame: (id: bigint) => void;
+};
+
+const CloseActionContainer = ({
+  adminAccount,
+  contractData,
+  isWaitWriting,
+  onFastStopLotteryGame,
+}: CloseActionContainerProp) => {
+  const [roomNth, setRoomNth] = useState(BigInt(0));
+  const contractName = contractData.contractName;
+  const isAdmin = useIsLotteryContractAdmin(contractName, adminAccount);
+  const closeRoomId = useLotteryActiveRoomAt({ contractName: contractName, nth: roomNth });
+  const roomActive = contractData.roomActive || BigInt(0);
+  if (roomActive < roomNth && roomActive != BigInt(0)) {
+    setRoomNth(roomActive - BigInt(1));
+  }
+
+  return (
+    <>
+      {isAdmin && roomActive > BigInt(0) && (
+        <div className="flex flex-col sm:flex-row join join-vertical sm:join-horizontal rounded-sm">
+          <div className="join-item flex flex-row items-center join">
+            <button
+              className="btn btn-md btn-primary join-item"
+              disabled={isWaitWriting || roomNth <= BigInt(0)}
+              onClick={() => setRoomNth(n => n - BigInt(1))}
+            >
+              <FaChevronLeft />
+            </button>
+            <div className="bg-white min-w-36 px-4 py-3 text-center join-item select-none">
+              #{typeof closeRoomId === "bigint" ? closeRoomId.toString() : "?"}
+            </div>
+            <button
+              className="btn btn-md btn-primary join-item"
+              disabled={isWaitWriting || roomNth > roomActive - BigInt(2)}
+              onClick={() => setRoomNth(n => n + BigInt(1))}
+            >
+              <FaChevronRight />
+            </button>
+          </div>
+          <button
+            className="min-w-36 btn btn-md btn-warning join-item"
+            onClick={() => onFastStopLotteryGame(closeRoomId || BigInt(0))}
+            disabled={isWaitWriting}
+          >
+            Close Lottery
+          </button>
+        </div>
       )}
     </>
   );
@@ -158,6 +138,8 @@ export const ManageLotteryContainer = ({ children, adminAccount, lotteryData }: 
   const isAdmin = useIsLotteryContractAdmin(contractName, adminAccount);
 
   const [lotteryCost, setLotteryCost] = useState("1.0");
+  const [roomNth, setRoomNth] = useState(BigInt(0));
+  const [roomCapacity, setRoomCapacity] = useState(BigInt(1));
   const [lotteryReward, setLotteryReward] = useState("10.0");
   const [lotteryReward2nd, setLotteryReward2nd] = useState("2.0");
   const [lotteryReward3rd, setLotteryReward3rd] = useState("1.5");
@@ -166,6 +148,11 @@ export const ManageLotteryContainer = ({ children, adminAccount, lotteryData }: 
   const [datetimeStr, setDatetimeStr] = useState(dayjs().format("YYYY-MM-DDTHH:mm"));
 
   const [waitContactData, setWaitContractData] = useState(false);
+
+  const roomActive = contractData.roomActive || BigInt(0);
+  if (roomActive < roomNth && roomActive != BigInt(0)) {
+    setRoomNth(roomActive - BigInt(1));
+  }
 
   if (!waitContactData && contractData.ready) {
     setWaitContractData(true);
@@ -180,8 +167,29 @@ export const ManageLotteryContainer = ({ children, adminAccount, lotteryData }: 
   const isSetAccountCostInvalid = !(isAdmin && isAddress(treasuryAccount) && isAddress(tokenContractAccount));
   const isWaitWriting = !contractData.ready || isPending || isMining;
 
+  const newLotteryData = useLotteryData({
+    id:
+      lotteryData.id !== BigInt(0) && typeof contractData.lastestId === "bigint"
+        ? contractData.lastestId + BigInt(1)
+        : BigInt(0),
+    contractName: contractData.contractName,
+  });
+  const isRoomFull =
+    roomActive >= (typeof contractData.roomCapacity === "bigint" ? contractData.roomCapacity : BigInt(0));
+
   function updateDateTimeStr(e: ChangeEvent<HTMLInputElement>) {
     setDatetimeStr(e.target.value as unknown as string);
+  }
+
+  function setRoomCapacityValue(val: string | bigint) {
+    setRoomCapacity(typeof val === "string" ? BigInt(val) : val);
+  }
+
+  async function updateRoomCapacity(capacity: bigint) {
+    await writeContractAsync({
+      functionName: "setLotteryRoomCap",
+      args: [capacity],
+    });
   }
 
   async function updateLotteryCost(cost: bigint) {
@@ -228,34 +236,6 @@ export const ManageLotteryContainer = ({ children, adminAccount, lotteryData }: 
     });
   }
 
-  async function declareLotteryGame(gameid: bigint) {
-    await writeContractAsync({
-      functionName: "declareLottery",
-      args: [gameid],
-    });
-  }
-
-  async function startLotteryGame(gameid: bigint, ts: number) {
-    await writeContractAsync({
-      functionName: "startBuyingLottery",
-      args: [gameid, BigInt(ts)],
-    });
-  }
-
-  async function endLotteryGame(gameid: bigint) {
-    await writeContractAsync({
-      functionName: "stopBuyingLottery",
-      args: [gameid],
-    });
-  }
-
-  async function rollNumber(gameid: bigint) {
-    await writeContractAsync({
-      functionName: "drawRandomNumber",
-      args: [gameid],
-    });
-  }
-
   async function fastStartLotteryGame(gameid: bigint, ts: number) {
     await writeContractAsync({
       functionName: "fastStartLottery",
@@ -285,39 +265,48 @@ export const ManageLotteryContainer = ({ children, adminAccount, lotteryData }: 
       <div className="my-8 w-full px-8 py-8 bg-base-300 flex flex-col gap-y-4 items-center justify-center">
         <LotteryNumberRangeContainer contractData={contractData} />
         {children}
-        {lotteryData.state == LotteryState.DECLARED && (
-          <div className="w-full max-w-screen-sm flex border-2 border-base-300 bg-base-200 rounded-full text-accent">
-            <input
-              type="datetime-local"
-              className="input input-ghost focus-within:border-transparent focus:outline-none focus:bg-transparent focus:text-gray-700 h-[2.2rem] min-h-[2.2rem] px-4 border w-full font-medium placeholder:text-accent/50 text-gray-700"
-              value={datetimeStr}
-              onChange={updateDateTimeStr}
-            />
-          </div>
+        {isAdmin && !isRoomFull && (
+          <>
+            <div className="w-full max-w-screen-sm flex border-2 border-base-300 bg-base-200 rounded-full text-accent">
+              <input
+                type="datetime-local"
+                className="input input-ghost focus-within:border-transparent focus:outline-none focus:bg-transparent focus:text-gray-700 h-[2.2rem] min-h-[2.2rem] px-4 border w-full font-medium placeholder:text-accent/50 text-gray-700"
+                value={datetimeStr}
+                onChange={updateDateTimeStr}
+              />
+            </div>
+            <div className="w-full max-w-52">
+              <GameActionButton
+                adminAccount={adminAccount}
+                lotteryData={newLotteryData}
+                isWaitWriting={isWaitWriting}
+                onFastStartLotteryGame={id => fastStartLotteryGame(id, Math.floor(dayjs(datetimeStr).valueOf() / 1000))}
+                onFastStopLotteryGame={fastStopLotteryGame}
+              />
+            </div>
+          </>
         )}
-        <div className="w-full max-w-52">
-          {false && (
-            <GameActionButton
-              adminAccount={adminAccount}
-              lotteryData={lotteryData}
-              isWaitWriting={isWaitWriting}
-              onDeclareLotteryGame={declareLotteryGame}
-              onStartLotteryGame={id => startLotteryGame(id, Math.floor(dayjs(datetimeStr).valueOf() / 1000))}
-              onEndLotteryGame={endLotteryGame}
-              onRollNumber={rollNumber}
-            />
-          )}
-
-          <GameActionButton2
-            adminAccount={adminAccount}
-            lotteryData={lotteryData}
-            isWaitWriting={isWaitWriting}
-            onFastStartLotteryGame={id => fastStartLotteryGame(id, Math.floor(dayjs(datetimeStr).valueOf() / 1000))}
-            onFastStopLotteryGame={fastStopLotteryGame}
-          />
-        </div>
+        <CloseActionContainer
+          contractData={contractData}
+          adminAccount={adminAccount}
+          isWaitWriting={isWaitWriting}
+          onFastStopLotteryGame={fastStopLotteryGame}
+        />
       </div>
       <div className="w-full px-6 max-w-screen-md flex flex-col gap-y-2 items-stretch">
+        <div>Room Capacity:</div>
+        <div>
+          <IntegerInput value={roomCapacity} onChange={setRoomCapacityValue}></IntegerInput>
+        </div>
+        <div className="flex flex-row justify-center">
+          <div className="w-full max-w-52">
+            <LotteryButton
+              label={_getLabel("Set Capacity")}
+              loading={isWaitWriting}
+              onClick={() => updateRoomCapacity(roomCapacity)}
+            />
+          </div>
+        </div>
         <div>Lottery Cost:</div>
         <div>
           <ItimTokenInput value={lotteryCost} onChange={setLotteryCost}></ItimTokenInput>

@@ -6,15 +6,14 @@ import { useAccount } from "wagmi";
 import { Digit3LotteryContainer } from "~~/components/lottery-containers/DetailGameContainer";
 import { LotteryCowndownContainer } from "~~/components/lottery-containers/LotteryCountdownContainer";
 import { Digit3LotteryRewardContainer } from "~~/components/lottery-containers/RewardContainer";
-import { IntegerVariant, isValidInteger } from "~~/components/scaffold-eth";
 import { ClaimPageWithIdContainer } from "~~/components/subpage/ClaimPageWithIdContainer";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { LotteryBasicContractName } from "~~/hooks/useLotteryContractData";
 import { useLotteryNumberData } from "~~/hooks/useLotteryNumberData";
 
 const ClaimLottery: NextPage = () => {
-  const [gameId, setGameId] = useState("0");
-  const [lotteryNumber, setLotteryNumber] = useState("");
+  const [gameId, setGameId] = useState(BigInt(0));
+  const [lotteryNumber, setLotteryNumber] = useState(BigInt(0));
   const [contractReady, setContractReady] = useState(false);
 
   const contractName: LotteryBasicContractName = "ItimLottery3Digits";
@@ -22,22 +21,22 @@ const ClaimLottery: NextPage = () => {
   const { address } = useAccount();
 
   const lotteryNumberData = useLotteryNumberData({
-    id: BigInt(gameId),
+    id: gameId,
     contractName: contractName,
-    lotteryNumber: isValidInteger(IntegerVariant.UINT256, lotteryNumber) ? BigInt(lotteryNumber) : BigInt(0),
+    lotteryNumber: lotteryNumber,
   });
 
   const lotteryData = lotteryNumberData.lotteryData;
   const contractData = lotteryData.contractData;
   if (contractData.ready && !contractReady) {
-    setGameId(contractData.lastestId?.toString() || "0");
+    setGameId(contractData.lastestId || BigInt(0));
     setContractReady(true);
   }
 
   async function claimLottery() {
     await writeContractAsync({
       functionName: "claimLottery",
-      args: [BigInt(gameId), BigInt(lotteryNumber)],
+      args: [gameId, lotteryNumber],
     });
   }
 

@@ -8,15 +8,15 @@ import "./ItimLotteryToken.sol";
 /**
  * Itim Lottery Test Token Contract
  * Author: chan1sook
- * Revision: 1
- * Last Updated: 2024-05-14 22:12
+ * Revision: 2
+ * Last Updated: 2024-05-21 13:00
  */
 contract ItimLotteryTestToken is ItimLotteryToken {
 	constructor(address _owner, address[] memory _minters) ItimLotteryToken(_owner, _minters) {}
 	
 	function tapFaucet(uint256 amount) public {
 		require(amount > 0, "Amount not zero");
-		require(amount <= 1_000 ether, "Maximum 1000 ethers/time");
+		require(amount <= 100_000 ether, "Maximum 100,000 ethers/time");
         _mint(msg.sender, amount);
     }
 }

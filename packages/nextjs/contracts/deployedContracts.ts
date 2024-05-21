@@ -6,8 +6,8 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   31337: {
-    ItimLottery2Digits: {
-      address: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+    ItimLottery12Numbers: {
+      address: "0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9",
       abi: [
         {
           inputs: [
@@ -347,6 +347,25 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "isLotteryRoomFull",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "_number",
               type: "uint256",
             },
@@ -365,6 +384,25 @@ const deployedContracts = {
         {
           inputs: [],
           name: "lastestLotteryId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyCount",
           outputs: [
             {
               internalType: "uint256",
@@ -409,30 +447,6 @@ const deployedContracts = {
               internalType: "bool",
               name: "claimed",
               type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "lotteryBuyerCount",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -510,6 +524,11 @@ const deployedContracts = {
               name: "drawNumber",
               type: "uint256",
             },
+            {
+              internalType: "uint256",
+              name: "buyCount",
+              type: "uint256",
+            },
           ],
           stateMutability: "view",
           type: "function",
@@ -543,6 +562,51 @@ const deployedContracts = {
         {
           inputs: [],
           name: "lotteryReward",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryRoomActives",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomActivesLength",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomCapacity",
           outputs: [
             {
               internalType: "uint256",
@@ -668,6 +732,19 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
+              name: "_capacity",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryRoomCap",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "_id",
               type: "uint256",
             },
@@ -755,16 +832,20 @@ const deployedContracts = {
         getRoleAdmin: "contracts/ItimLotteryBase.sol",
         grantRole: "contracts/ItimLotteryBase.sol",
         hasRole: "contracts/ItimLotteryBase.sol",
+        isLotteryRoomFull: "contracts/ItimLotteryBase.sol",
         isValidNumber: "contracts/ItimLotteryBase.sol",
         lastestLotteryId: "contracts/ItimLotteryBase.sol",
+        lotteryBuyCount: "contracts/ItimLotteryBase.sol",
         lotteryBuyData: "contracts/ItimLotteryBase.sol",
-        lotteryBuyerCount: "contracts/ItimLotteryBase.sol",
         lotteryBuyerData: "contracts/ItimLotteryBase.sol",
         lotteryCost: "contracts/ItimLotteryBase.sol",
         lotteryData: "contracts/ItimLotteryBase.sol",
         lotteryMaxNumber: "contracts/ItimLotteryBase.sol",
         lotteryMinNumber: "contracts/ItimLotteryBase.sol",
         lotteryReward: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActives: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActivesLength: "contracts/ItimLotteryBase.sol",
+        lotteryRoomCapacity: "contracts/ItimLotteryBase.sol",
         owner: "contracts/ItimLotteryBase.sol",
         renounceRole: "contracts/ItimLotteryBase.sol",
         revokeRole: "contracts/ItimLotteryBase.sol",
@@ -772,6 +853,7 @@ const deployedContracts = {
         setLotteryCost: "contracts/ItimLotteryBase.sol",
         setLotteryNumberRange: "contracts/ItimLotteryBase.sol",
         setLotteryReward: "contracts/ItimLotteryBase.sol",
+        setLotteryRoomCap: "contracts/ItimLotteryBase.sol",
         startBuyingLottery: "contracts/ItimLotteryBase.sol",
         stopBuyingLottery: "contracts/ItimLotteryBase.sol",
         supportsInterface: "contracts/ItimLotteryBase.sol",
@@ -779,8 +861,8 @@ const deployedContracts = {
         treasuryAccount: "contracts/ItimLotteryBase.sol",
       },
     },
-    ItimLottery3Digits: {
-      address: "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+    ItimLottery2Digits: {
+      address: "0xc5a5C42992dECbae36851359345FE25997F5C42d",
       abi: [
         {
           inputs: [
@@ -1120,6 +1202,25 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "isLotteryRoomFull",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "_number",
               type: "uint256",
             },
@@ -1138,6 +1239,25 @@ const deployedContracts = {
         {
           inputs: [],
           name: "lastestLotteryId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyCount",
           outputs: [
             {
               internalType: "uint256",
@@ -1182,30 +1302,6 @@ const deployedContracts = {
               internalType: "bool",
               name: "claimed",
               type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "lotteryBuyerCount",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -1283,6 +1379,866 @@ const deployedContracts = {
               name: "drawNumber",
               type: "uint256",
             },
+            {
+              internalType: "uint256",
+              name: "buyCount",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryMaxNumber",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryMinNumber",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryReward",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryRoomActives",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomActivesLength",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomCapacity",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "renounceRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "revokeRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_tokenContract",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_treasuryAccount",
+              type: "address",
+            },
+          ],
+          name: "setAccounts",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_cost",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryCost",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_min",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_max",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryNumberRange",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_reward",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryReward",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_capacity",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryRoomCap",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_expiredTime",
+              type: "uint256",
+            },
+          ],
+          name: "startBuyingLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "stopBuyingLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "tokenContractAccount",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "treasuryAccount",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        ADMIN_ROLE: "contracts/ItimLotteryBase.sol",
+        DEFAULT_ADMIN_ROLE: "contracts/ItimLotteryBase.sol",
+        _calculateRewardOfLotteryNumber: "contracts/ItimLotteryBase.sol",
+        buyLottery: "contracts/ItimLotteryBase.sol",
+        claimLottery: "contracts/ItimLotteryBase.sol",
+        declareLottery: "contracts/ItimLotteryBase.sol",
+        drawRandomNumber: "contracts/ItimLotteryBase.sol",
+        fastStartLottery: "contracts/ItimLotteryBase.sol",
+        fastStopLottery: "contracts/ItimLotteryBase.sol",
+        getRewardOfLottery: "contracts/ItimLotteryBase.sol",
+        getRoleAdmin: "contracts/ItimLotteryBase.sol",
+        grantRole: "contracts/ItimLotteryBase.sol",
+        hasRole: "contracts/ItimLotteryBase.sol",
+        isLotteryRoomFull: "contracts/ItimLotteryBase.sol",
+        isValidNumber: "contracts/ItimLotteryBase.sol",
+        lastestLotteryId: "contracts/ItimLotteryBase.sol",
+        lotteryBuyCount: "contracts/ItimLotteryBase.sol",
+        lotteryBuyData: "contracts/ItimLotteryBase.sol",
+        lotteryBuyerData: "contracts/ItimLotteryBase.sol",
+        lotteryCost: "contracts/ItimLotteryBase.sol",
+        lotteryData: "contracts/ItimLotteryBase.sol",
+        lotteryMaxNumber: "contracts/ItimLotteryBase.sol",
+        lotteryMinNumber: "contracts/ItimLotteryBase.sol",
+        lotteryReward: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActives: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActivesLength: "contracts/ItimLotteryBase.sol",
+        lotteryRoomCapacity: "contracts/ItimLotteryBase.sol",
+        owner: "contracts/ItimLotteryBase.sol",
+        renounceRole: "contracts/ItimLotteryBase.sol",
+        revokeRole: "contracts/ItimLotteryBase.sol",
+        setAccounts: "contracts/ItimLotteryBase.sol",
+        setLotteryCost: "contracts/ItimLotteryBase.sol",
+        setLotteryNumberRange: "contracts/ItimLotteryBase.sol",
+        setLotteryReward: "contracts/ItimLotteryBase.sol",
+        setLotteryRoomCap: "contracts/ItimLotteryBase.sol",
+        startBuyingLottery: "contracts/ItimLotteryBase.sol",
+        stopBuyingLottery: "contracts/ItimLotteryBase.sol",
+        supportsInterface: "contracts/ItimLotteryBase.sol",
+        tokenContractAccount: "contracts/ItimLotteryBase.sol",
+        treasuryAccount: "contracts/ItimLotteryBase.sol",
+      },
+    },
+    ItimLottery3Digits: {
+      address: "0xE6E340D132b5f46d1e472DebcD681B2aBc16e57E",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_owner",
+              type: "address",
+            },
+            {
+              internalType: "address[]",
+              name: "_admins",
+              type: "address[]",
+            },
+            {
+              internalType: "address",
+              name: "_tokenContractAccount",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_treasuryAccount",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_randomSeed",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "previousAdminRole",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "newAdminRole",
+              type: "bytes32",
+            },
+          ],
+          name: "RoleAdminChanged",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "sender",
+              type: "address",
+            },
+          ],
+          name: "RoleGranted",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "sender",
+              type: "address",
+            },
+          ],
+          name: "RoleRevoked",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "ADMIN_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "DEFAULT_ADMIN_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "_calculateRewardOfLotteryNumber",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "buyLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "claimLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "declareLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "drawRandomNumber",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_expiredTime",
+              type: "uint256",
+            },
+          ],
+          name: "fastStartLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "fastStopLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "getRewardOfLottery",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "getRoleAdmin",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "grantRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "hasRole",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "isLotteryRoomFull",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "isValidNumber",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lastestLotteryId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyData",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "owned",
+              type: "bool",
+            },
+            {
+              internalType: "address",
+              name: "buyer",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "buyTime",
+              type: "uint256",
+            },
+            {
+              internalType: "bool",
+              name: "claimed",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyerData",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryCost",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryData",
+          outputs: [
+            {
+              internalType: "enum ItimLotteryBase.ItimLotteryState",
+              name: "state",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "expiredTime",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "drawTime",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "drawNumber",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "buyCount",
+              type: "uint256",
+            },
           ],
           stateMutability: "view",
           type: "function",
@@ -1329,6 +2285,51 @@ const deployedContracts = {
         {
           inputs: [],
           name: "lotteryReward2nd",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryRoomActives",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomActivesLength",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomCapacity",
           outputs: [
             {
               internalType: "uint256",
@@ -1467,6 +2468,19 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
+              name: "_capacity",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryRoomCap",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "_id",
               type: "uint256",
             },
@@ -1554,16 +2568,20 @@ const deployedContracts = {
         getRoleAdmin: "contracts/ItimLotteryBase.sol",
         grantRole: "contracts/ItimLotteryBase.sol",
         hasRole: "contracts/ItimLotteryBase.sol",
+        isLotteryRoomFull: "contracts/ItimLotteryBase.sol",
         isValidNumber: "contracts/ItimLotteryBase.sol",
         lastestLotteryId: "contracts/ItimLotteryBase.sol",
+        lotteryBuyCount: "contracts/ItimLotteryBase.sol",
         lotteryBuyData: "contracts/ItimLotteryBase.sol",
-        lotteryBuyerCount: "contracts/ItimLotteryBase.sol",
         lotteryBuyerData: "contracts/ItimLotteryBase.sol",
         lotteryCost: "contracts/ItimLotteryBase.sol",
         lotteryData: "contracts/ItimLotteryBase.sol",
         lotteryMaxNumber: "contracts/ItimLotteryBase.sol",
         lotteryMinNumber: "contracts/ItimLotteryBase.sol",
         lotteryReward: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActives: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActivesLength: "contracts/ItimLotteryBase.sol",
+        lotteryRoomCapacity: "contracts/ItimLotteryBase.sol",
         owner: "contracts/ItimLotteryBase.sol",
         renounceRole: "contracts/ItimLotteryBase.sol",
         revokeRole: "contracts/ItimLotteryBase.sol",
@@ -1571,6 +2589,7 @@ const deployedContracts = {
         setLotteryCost: "contracts/ItimLotteryBase.sol",
         setLotteryNumberRange: "contracts/ItimLotteryBase.sol",
         setLotteryReward: "contracts/ItimLotteryBase.sol",
+        setLotteryRoomCap: "contracts/ItimLotteryBase.sol",
         startBuyingLottery: "contracts/ItimLotteryBase.sol",
         stopBuyingLottery: "contracts/ItimLotteryBase.sol",
         supportsInterface: "contracts/ItimLotteryBase.sol",
@@ -1579,7 +2598,7 @@ const deployedContracts = {
       },
     },
     ItimLottery4Digits: {
-      address: "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
+      address: "0x84eA74d481Ee0A5332c457a4d796187F6Ba67fEB",
       abi: [
         {
           inputs: [
@@ -1919,6 +2938,25 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "isLotteryRoomFull",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "_number",
               type: "uint256",
             },
@@ -1937,6 +2975,25 @@ const deployedContracts = {
         {
           inputs: [],
           name: "lastestLotteryId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyCount",
           outputs: [
             {
               internalType: "uint256",
@@ -1981,30 +3038,6 @@ const deployedContracts = {
               internalType: "bool",
               name: "claimed",
               type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "lotteryBuyerCount",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -2082,6 +3115,11 @@ const deployedContracts = {
               name: "drawNumber",
               type: "uint256",
             },
+            {
+              internalType: "uint256",
+              name: "buyCount",
+              type: "uint256",
+            },
           ],
           stateMutability: "view",
           type: "function",
@@ -2141,6 +3179,51 @@ const deployedContracts = {
         {
           inputs: [],
           name: "lotteryReward3rd",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryRoomActives",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomActivesLength",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomCapacity",
           outputs: [
             {
               internalType: "uint256",
@@ -2284,6 +3367,19 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
+              name: "_capacity",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryRoomCap",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "_id",
               type: "uint256",
             },
@@ -2371,16 +3467,20 @@ const deployedContracts = {
         getRoleAdmin: "contracts/ItimLotteryBase.sol",
         grantRole: "contracts/ItimLotteryBase.sol",
         hasRole: "contracts/ItimLotteryBase.sol",
+        isLotteryRoomFull: "contracts/ItimLotteryBase.sol",
         isValidNumber: "contracts/ItimLotteryBase.sol",
         lastestLotteryId: "contracts/ItimLotteryBase.sol",
+        lotteryBuyCount: "contracts/ItimLotteryBase.sol",
         lotteryBuyData: "contracts/ItimLotteryBase.sol",
-        lotteryBuyerCount: "contracts/ItimLotteryBase.sol",
         lotteryBuyerData: "contracts/ItimLotteryBase.sol",
         lotteryCost: "contracts/ItimLotteryBase.sol",
         lotteryData: "contracts/ItimLotteryBase.sol",
         lotteryMaxNumber: "contracts/ItimLotteryBase.sol",
         lotteryMinNumber: "contracts/ItimLotteryBase.sol",
         lotteryReward: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActives: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActivesLength: "contracts/ItimLotteryBase.sol",
+        lotteryRoomCapacity: "contracts/ItimLotteryBase.sol",
         owner: "contracts/ItimLotteryBase.sol",
         renounceRole: "contracts/ItimLotteryBase.sol",
         revokeRole: "contracts/ItimLotteryBase.sol",
@@ -2388,6 +3488,881 @@ const deployedContracts = {
         setLotteryCost: "contracts/ItimLotteryBase.sol",
         setLotteryNumberRange: "contracts/ItimLotteryBase.sol",
         setLotteryReward: "contracts/ItimLotteryBase.sol",
+        setLotteryRoomCap: "contracts/ItimLotteryBase.sol",
+        startBuyingLottery: "contracts/ItimLotteryBase.sol",
+        stopBuyingLottery: "contracts/ItimLotteryBase.sol",
+        supportsInterface: "contracts/ItimLotteryBase.sol",
+        tokenContractAccount: "contracts/ItimLotteryBase.sol",
+        treasuryAccount: "contracts/ItimLotteryBase.sol",
+      },
+    },
+    ItimLotteryOddEven: {
+      address: "0x851356ae760d987E095750cCeb3bC6014560891C",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_owner",
+              type: "address",
+            },
+            {
+              internalType: "address[]",
+              name: "_admins",
+              type: "address[]",
+            },
+            {
+              internalType: "address",
+              name: "_tokenContractAccount",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_treasuryAccount",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_randomSeed",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "previousAdminRole",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "newAdminRole",
+              type: "bytes32",
+            },
+          ],
+          name: "RoleAdminChanged",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "sender",
+              type: "address",
+            },
+          ],
+          name: "RoleGranted",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "sender",
+              type: "address",
+            },
+          ],
+          name: "RoleRevoked",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "ADMIN_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "DEFAULT_ADMIN_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "_calculateRewardOfLotteryNumber",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "_isNumberOdd",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "pure",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "buyLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "claimLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "declareLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "drawRandomNumber",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_expiredTime",
+              type: "uint256",
+            },
+          ],
+          name: "fastStartLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "fastStopLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "getRewardOfLottery",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "getRoleAdmin",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "grantRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "hasRole",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "isLotteryRoomFull",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "isValidNumber",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lastestLotteryId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyData",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "owned",
+              type: "bool",
+            },
+            {
+              internalType: "address",
+              name: "buyer",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "buyTime",
+              type: "uint256",
+            },
+            {
+              internalType: "bool",
+              name: "claimed",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyerData",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryCost",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryData",
+          outputs: [
+            {
+              internalType: "enum ItimLotteryBase.ItimLotteryState",
+              name: "state",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "expiredTime",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "drawTime",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "drawNumber",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "buyCount",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryMaxNumber",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryMinNumber",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryReward",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryRoomActives",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomActivesLength",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomCapacity",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "renounceRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "revokeRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_tokenContract",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_treasuryAccount",
+              type: "address",
+            },
+          ],
+          name: "setAccounts",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_cost",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryCost",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_min",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_max",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryNumberRange",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_reward",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryReward",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_capacity",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryRoomCap",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_expiredTime",
+              type: "uint256",
+            },
+          ],
+          name: "startBuyingLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "stopBuyingLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "tokenContractAccount",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "treasuryAccount",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        ADMIN_ROLE: "contracts/ItimLotteryBase.sol",
+        DEFAULT_ADMIN_ROLE: "contracts/ItimLotteryBase.sol",
+        _calculateRewardOfLotteryNumber: "contracts/ItimLotteryBase.sol",
+        buyLottery: "contracts/ItimLotteryBase.sol",
+        claimLottery: "contracts/ItimLotteryBase.sol",
+        declareLottery: "contracts/ItimLotteryBase.sol",
+        drawRandomNumber: "contracts/ItimLotteryBase.sol",
+        fastStartLottery: "contracts/ItimLotteryBase.sol",
+        fastStopLottery: "contracts/ItimLotteryBase.sol",
+        getRewardOfLottery: "contracts/ItimLotteryBase.sol",
+        getRoleAdmin: "contracts/ItimLotteryBase.sol",
+        grantRole: "contracts/ItimLotteryBase.sol",
+        hasRole: "contracts/ItimLotteryBase.sol",
+        isLotteryRoomFull: "contracts/ItimLotteryBase.sol",
+        isValidNumber: "contracts/ItimLotteryBase.sol",
+        lastestLotteryId: "contracts/ItimLotteryBase.sol",
+        lotteryBuyCount: "contracts/ItimLotteryBase.sol",
+        lotteryBuyData: "contracts/ItimLotteryBase.sol",
+        lotteryBuyerData: "contracts/ItimLotteryBase.sol",
+        lotteryCost: "contracts/ItimLotteryBase.sol",
+        lotteryData: "contracts/ItimLotteryBase.sol",
+        lotteryMaxNumber: "contracts/ItimLotteryBase.sol",
+        lotteryMinNumber: "contracts/ItimLotteryBase.sol",
+        lotteryReward: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActives: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActivesLength: "contracts/ItimLotteryBase.sol",
+        lotteryRoomCapacity: "contracts/ItimLotteryBase.sol",
+        owner: "contracts/ItimLotteryBase.sol",
+        renounceRole: "contracts/ItimLotteryBase.sol",
+        revokeRole: "contracts/ItimLotteryBase.sol",
+        setAccounts: "contracts/ItimLotteryBase.sol",
+        setLotteryCost: "contracts/ItimLotteryBase.sol",
+        setLotteryNumberRange: "contracts/ItimLotteryBase.sol",
+        setLotteryReward: "contracts/ItimLotteryBase.sol",
+        setLotteryRoomCap: "contracts/ItimLotteryBase.sol",
         startBuyingLottery: "contracts/ItimLotteryBase.sol",
         stopBuyingLottery: "contracts/ItimLotteryBase.sol",
         supportsInterface: "contracts/ItimLotteryBase.sol",
@@ -2396,7 +4371,7 @@ const deployedContracts = {
       },
     },
     ItimLotteryTestToken: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      address: "0x7a2088a1bFc9d81c55368AE168C2C02570cB814F",
       abi: [
         {
           inputs: [
@@ -2972,8 +4947,8 @@ const deployedContracts = {
     },
   },
   11155111: {
-    ItimLottery2Digits: {
-      address: "0xF9482eaa2a6bac919F6eb553B590100E8b27Db4F",
+    ItimLottery12Numbers: {
+      address: "0x19FbFE6B01D508330D6EEf2e4bb1b0c81B4DB3d6",
       abi: [
         {
           inputs: [
@@ -3202,6 +5177,37 @@ const deployedContracts = {
             },
             {
               internalType: "uint256",
+              name: "_expiredTime",
+              type: "uint256",
+            },
+          ],
+          name: "fastStartLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "fastStopLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
               name: "_number",
               type: "uint256",
             },
@@ -3282,6 +5288,25 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "isLotteryRoomFull",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "_number",
               type: "uint256",
             },
@@ -3300,6 +5325,25 @@ const deployedContracts = {
         {
           inputs: [],
           name: "lastestLotteryId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyCount",
           outputs: [
             {
               internalType: "uint256",
@@ -3344,30 +5388,6 @@ const deployedContracts = {
               internalType: "bool",
               name: "claimed",
               type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "lotteryBuyerCount",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -3445,6 +5465,11 @@ const deployedContracts = {
               name: "drawNumber",
               type: "uint256",
             },
+            {
+              internalType: "uint256",
+              name: "buyCount",
+              type: "uint256",
+            },
           ],
           stateMutability: "view",
           type: "function",
@@ -3478,6 +5503,51 @@ const deployedContracts = {
         {
           inputs: [],
           name: "lotteryReward",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryRoomActives",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomActivesLength",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomCapacity",
           outputs: [
             {
               internalType: "uint256",
@@ -3603,6 +5673,19 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
+              name: "_capacity",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryRoomCap",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "_id",
               type: "uint256",
             },
@@ -3690,16 +5773,20 @@ const deployedContracts = {
         getRoleAdmin: "contracts/ItimLotteryBase.sol",
         grantRole: "contracts/ItimLotteryBase.sol",
         hasRole: "contracts/ItimLotteryBase.sol",
+        isLotteryRoomFull: "contracts/ItimLotteryBase.sol",
         isValidNumber: "contracts/ItimLotteryBase.sol",
         lastestLotteryId: "contracts/ItimLotteryBase.sol",
+        lotteryBuyCount: "contracts/ItimLotteryBase.sol",
         lotteryBuyData: "contracts/ItimLotteryBase.sol",
-        lotteryBuyerCount: "contracts/ItimLotteryBase.sol",
         lotteryBuyerData: "contracts/ItimLotteryBase.sol",
         lotteryCost: "contracts/ItimLotteryBase.sol",
         lotteryData: "contracts/ItimLotteryBase.sol",
         lotteryMaxNumber: "contracts/ItimLotteryBase.sol",
         lotteryMinNumber: "contracts/ItimLotteryBase.sol",
         lotteryReward: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActives: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActivesLength: "contracts/ItimLotteryBase.sol",
+        lotteryRoomCapacity: "contracts/ItimLotteryBase.sol",
         owner: "contracts/ItimLotteryBase.sol",
         renounceRole: "contracts/ItimLotteryBase.sol",
         revokeRole: "contracts/ItimLotteryBase.sol",
@@ -3707,6 +5794,7 @@ const deployedContracts = {
         setLotteryCost: "contracts/ItimLotteryBase.sol",
         setLotteryNumberRange: "contracts/ItimLotteryBase.sol",
         setLotteryReward: "contracts/ItimLotteryBase.sol",
+        setLotteryRoomCap: "contracts/ItimLotteryBase.sol",
         startBuyingLottery: "contracts/ItimLotteryBase.sol",
         stopBuyingLottery: "contracts/ItimLotteryBase.sol",
         supportsInterface: "contracts/ItimLotteryBase.sol",
@@ -3714,8 +5802,8 @@ const deployedContracts = {
         treasuryAccount: "contracts/ItimLotteryBase.sol",
       },
     },
-    ItimLottery3Digits: {
-      address: "0xFB63A1B4cA6E688F93bB6a67deC8DE46eDacA583",
+    ItimLottery2Digits: {
+      address: "0xA2427cD74d71D8f682A0FDDD8bB3289929B54156",
       abi: [
         {
           inputs: [
@@ -3944,6 +6032,37 @@ const deployedContracts = {
             },
             {
               internalType: "uint256",
+              name: "_expiredTime",
+              type: "uint256",
+            },
+          ],
+          name: "fastStartLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "fastStopLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
               name: "_number",
               type: "uint256",
             },
@@ -4024,6 +6143,25 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "isLotteryRoomFull",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "_number",
               type: "uint256",
             },
@@ -4042,6 +6180,25 @@ const deployedContracts = {
         {
           inputs: [],
           name: "lastestLotteryId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyCount",
           outputs: [
             {
               internalType: "uint256",
@@ -4086,30 +6243,6 @@ const deployedContracts = {
               internalType: "bool",
               name: "claimed",
               type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "lotteryBuyerCount",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -4187,6 +6320,866 @@ const deployedContracts = {
               name: "drawNumber",
               type: "uint256",
             },
+            {
+              internalType: "uint256",
+              name: "buyCount",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryMaxNumber",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryMinNumber",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryReward",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryRoomActives",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomActivesLength",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomCapacity",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "renounceRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "revokeRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_tokenContract",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_treasuryAccount",
+              type: "address",
+            },
+          ],
+          name: "setAccounts",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_cost",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryCost",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_min",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_max",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryNumberRange",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_reward",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryReward",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_capacity",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryRoomCap",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_expiredTime",
+              type: "uint256",
+            },
+          ],
+          name: "startBuyingLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "stopBuyingLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "tokenContractAccount",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "treasuryAccount",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        ADMIN_ROLE: "contracts/ItimLotteryBase.sol",
+        DEFAULT_ADMIN_ROLE: "contracts/ItimLotteryBase.sol",
+        _calculateRewardOfLotteryNumber: "contracts/ItimLotteryBase.sol",
+        buyLottery: "contracts/ItimLotteryBase.sol",
+        claimLottery: "contracts/ItimLotteryBase.sol",
+        declareLottery: "contracts/ItimLotteryBase.sol",
+        drawRandomNumber: "contracts/ItimLotteryBase.sol",
+        fastStartLottery: "contracts/ItimLotteryBase.sol",
+        fastStopLottery: "contracts/ItimLotteryBase.sol",
+        getRewardOfLottery: "contracts/ItimLotteryBase.sol",
+        getRoleAdmin: "contracts/ItimLotteryBase.sol",
+        grantRole: "contracts/ItimLotteryBase.sol",
+        hasRole: "contracts/ItimLotteryBase.sol",
+        isLotteryRoomFull: "contracts/ItimLotteryBase.sol",
+        isValidNumber: "contracts/ItimLotteryBase.sol",
+        lastestLotteryId: "contracts/ItimLotteryBase.sol",
+        lotteryBuyCount: "contracts/ItimLotteryBase.sol",
+        lotteryBuyData: "contracts/ItimLotteryBase.sol",
+        lotteryBuyerData: "contracts/ItimLotteryBase.sol",
+        lotteryCost: "contracts/ItimLotteryBase.sol",
+        lotteryData: "contracts/ItimLotteryBase.sol",
+        lotteryMaxNumber: "contracts/ItimLotteryBase.sol",
+        lotteryMinNumber: "contracts/ItimLotteryBase.sol",
+        lotteryReward: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActives: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActivesLength: "contracts/ItimLotteryBase.sol",
+        lotteryRoomCapacity: "contracts/ItimLotteryBase.sol",
+        owner: "contracts/ItimLotteryBase.sol",
+        renounceRole: "contracts/ItimLotteryBase.sol",
+        revokeRole: "contracts/ItimLotteryBase.sol",
+        setAccounts: "contracts/ItimLotteryBase.sol",
+        setLotteryCost: "contracts/ItimLotteryBase.sol",
+        setLotteryNumberRange: "contracts/ItimLotteryBase.sol",
+        setLotteryReward: "contracts/ItimLotteryBase.sol",
+        setLotteryRoomCap: "contracts/ItimLotteryBase.sol",
+        startBuyingLottery: "contracts/ItimLotteryBase.sol",
+        stopBuyingLottery: "contracts/ItimLotteryBase.sol",
+        supportsInterface: "contracts/ItimLotteryBase.sol",
+        tokenContractAccount: "contracts/ItimLotteryBase.sol",
+        treasuryAccount: "contracts/ItimLotteryBase.sol",
+      },
+    },
+    ItimLottery3Digits: {
+      address: "0x29cFf425531a76c891a0a67E1129B25bD56B91aA",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_owner",
+              type: "address",
+            },
+            {
+              internalType: "address[]",
+              name: "_admins",
+              type: "address[]",
+            },
+            {
+              internalType: "address",
+              name: "_tokenContractAccount",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_treasuryAccount",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_randomSeed",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "previousAdminRole",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "newAdminRole",
+              type: "bytes32",
+            },
+          ],
+          name: "RoleAdminChanged",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "sender",
+              type: "address",
+            },
+          ],
+          name: "RoleGranted",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "sender",
+              type: "address",
+            },
+          ],
+          name: "RoleRevoked",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "ADMIN_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "DEFAULT_ADMIN_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "_calculateRewardOfLotteryNumber",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "buyLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "claimLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "declareLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "drawRandomNumber",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_expiredTime",
+              type: "uint256",
+            },
+          ],
+          name: "fastStartLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "fastStopLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "getRewardOfLottery",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "getRoleAdmin",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "grantRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "hasRole",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "isLotteryRoomFull",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "isValidNumber",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lastestLotteryId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyData",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "owned",
+              type: "bool",
+            },
+            {
+              internalType: "address",
+              name: "buyer",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "buyTime",
+              type: "uint256",
+            },
+            {
+              internalType: "bool",
+              name: "claimed",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyerData",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryCost",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryData",
+          outputs: [
+            {
+              internalType: "enum ItimLotteryBase.ItimLotteryState",
+              name: "state",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "expiredTime",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "drawTime",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "drawNumber",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "buyCount",
+              type: "uint256",
+            },
           ],
           stateMutability: "view",
           type: "function",
@@ -4233,6 +7226,51 @@ const deployedContracts = {
         {
           inputs: [],
           name: "lotteryReward2nd",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryRoomActives",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomActivesLength",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomCapacity",
           outputs: [
             {
               internalType: "uint256",
@@ -4371,6 +7409,19 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
+              name: "_capacity",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryRoomCap",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "_id",
               type: "uint256",
             },
@@ -4458,16 +7509,20 @@ const deployedContracts = {
         getRoleAdmin: "contracts/ItimLotteryBase.sol",
         grantRole: "contracts/ItimLotteryBase.sol",
         hasRole: "contracts/ItimLotteryBase.sol",
+        isLotteryRoomFull: "contracts/ItimLotteryBase.sol",
         isValidNumber: "contracts/ItimLotteryBase.sol",
         lastestLotteryId: "contracts/ItimLotteryBase.sol",
+        lotteryBuyCount: "contracts/ItimLotteryBase.sol",
         lotteryBuyData: "contracts/ItimLotteryBase.sol",
-        lotteryBuyerCount: "contracts/ItimLotteryBase.sol",
         lotteryBuyerData: "contracts/ItimLotteryBase.sol",
         lotteryCost: "contracts/ItimLotteryBase.sol",
         lotteryData: "contracts/ItimLotteryBase.sol",
         lotteryMaxNumber: "contracts/ItimLotteryBase.sol",
         lotteryMinNumber: "contracts/ItimLotteryBase.sol",
         lotteryReward: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActives: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActivesLength: "contracts/ItimLotteryBase.sol",
+        lotteryRoomCapacity: "contracts/ItimLotteryBase.sol",
         owner: "contracts/ItimLotteryBase.sol",
         renounceRole: "contracts/ItimLotteryBase.sol",
         revokeRole: "contracts/ItimLotteryBase.sol",
@@ -4475,6 +7530,7 @@ const deployedContracts = {
         setLotteryCost: "contracts/ItimLotteryBase.sol",
         setLotteryNumberRange: "contracts/ItimLotteryBase.sol",
         setLotteryReward: "contracts/ItimLotteryBase.sol",
+        setLotteryRoomCap: "contracts/ItimLotteryBase.sol",
         startBuyingLottery: "contracts/ItimLotteryBase.sol",
         stopBuyingLottery: "contracts/ItimLotteryBase.sol",
         supportsInterface: "contracts/ItimLotteryBase.sol",
@@ -4483,7 +7539,7 @@ const deployedContracts = {
       },
     },
     ItimLottery4Digits: {
-      address: "0xe96035579996f6AA30000a403B9C0dBe5eBB065A",
+      address: "0x48656A41c68d6C1F99E59C90588237c16ed020E8",
       abi: [
         {
           inputs: [
@@ -4712,6 +7768,37 @@ const deployedContracts = {
             },
             {
               internalType: "uint256",
+              name: "_expiredTime",
+              type: "uint256",
+            },
+          ],
+          name: "fastStartLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "fastStopLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
               name: "_number",
               type: "uint256",
             },
@@ -4792,6 +7879,25 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "isLotteryRoomFull",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "_number",
               type: "uint256",
             },
@@ -4810,6 +7916,25 @@ const deployedContracts = {
         {
           inputs: [],
           name: "lastestLotteryId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyCount",
           outputs: [
             {
               internalType: "uint256",
@@ -4854,30 +7979,6 @@ const deployedContracts = {
               internalType: "bool",
               name: "claimed",
               type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "lotteryBuyerCount",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -4955,6 +8056,11 @@ const deployedContracts = {
               name: "drawNumber",
               type: "uint256",
             },
+            {
+              internalType: "uint256",
+              name: "buyCount",
+              type: "uint256",
+            },
           ],
           stateMutability: "view",
           type: "function",
@@ -5014,6 +8120,51 @@ const deployedContracts = {
         {
           inputs: [],
           name: "lotteryReward3rd",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryRoomActives",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomActivesLength",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomCapacity",
           outputs: [
             {
               internalType: "uint256",
@@ -5157,6 +8308,19 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
+              name: "_capacity",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryRoomCap",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "_id",
               type: "uint256",
             },
@@ -5244,16 +8408,20 @@ const deployedContracts = {
         getRoleAdmin: "contracts/ItimLotteryBase.sol",
         grantRole: "contracts/ItimLotteryBase.sol",
         hasRole: "contracts/ItimLotteryBase.sol",
+        isLotteryRoomFull: "contracts/ItimLotteryBase.sol",
         isValidNumber: "contracts/ItimLotteryBase.sol",
         lastestLotteryId: "contracts/ItimLotteryBase.sol",
+        lotteryBuyCount: "contracts/ItimLotteryBase.sol",
         lotteryBuyData: "contracts/ItimLotteryBase.sol",
-        lotteryBuyerCount: "contracts/ItimLotteryBase.sol",
         lotteryBuyerData: "contracts/ItimLotteryBase.sol",
         lotteryCost: "contracts/ItimLotteryBase.sol",
         lotteryData: "contracts/ItimLotteryBase.sol",
         lotteryMaxNumber: "contracts/ItimLotteryBase.sol",
         lotteryMinNumber: "contracts/ItimLotteryBase.sol",
         lotteryReward: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActives: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActivesLength: "contracts/ItimLotteryBase.sol",
+        lotteryRoomCapacity: "contracts/ItimLotteryBase.sol",
         owner: "contracts/ItimLotteryBase.sol",
         renounceRole: "contracts/ItimLotteryBase.sol",
         revokeRole: "contracts/ItimLotteryBase.sol",
@@ -5261,6 +8429,881 @@ const deployedContracts = {
         setLotteryCost: "contracts/ItimLotteryBase.sol",
         setLotteryNumberRange: "contracts/ItimLotteryBase.sol",
         setLotteryReward: "contracts/ItimLotteryBase.sol",
+        setLotteryRoomCap: "contracts/ItimLotteryBase.sol",
+        startBuyingLottery: "contracts/ItimLotteryBase.sol",
+        stopBuyingLottery: "contracts/ItimLotteryBase.sol",
+        supportsInterface: "contracts/ItimLotteryBase.sol",
+        tokenContractAccount: "contracts/ItimLotteryBase.sol",
+        treasuryAccount: "contracts/ItimLotteryBase.sol",
+      },
+    },
+    ItimLotteryOddEven: {
+      address: "0x20F008871BA121C1F09BD2665B9C1dB06725583c",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_owner",
+              type: "address",
+            },
+            {
+              internalType: "address[]",
+              name: "_admins",
+              type: "address[]",
+            },
+            {
+              internalType: "address",
+              name: "_tokenContractAccount",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_treasuryAccount",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_randomSeed",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "previousAdminRole",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "newAdminRole",
+              type: "bytes32",
+            },
+          ],
+          name: "RoleAdminChanged",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "sender",
+              type: "address",
+            },
+          ],
+          name: "RoleGranted",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "sender",
+              type: "address",
+            },
+          ],
+          name: "RoleRevoked",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "ADMIN_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "DEFAULT_ADMIN_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "_calculateRewardOfLotteryNumber",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "_isNumberOdd",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "pure",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "buyLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "claimLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "declareLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "drawRandomNumber",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_expiredTime",
+              type: "uint256",
+            },
+          ],
+          name: "fastStartLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "fastStopLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "getRewardOfLottery",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "getRoleAdmin",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "grantRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "hasRole",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "isLotteryRoomFull",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_number",
+              type: "uint256",
+            },
+          ],
+          name: "isValidNumber",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lastestLotteryId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyData",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "owned",
+              type: "bool",
+            },
+            {
+              internalType: "address",
+              name: "buyer",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "buyTime",
+              type: "uint256",
+            },
+            {
+              internalType: "bool",
+              name: "claimed",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryBuyerData",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryCost",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryData",
+          outputs: [
+            {
+              internalType: "enum ItimLotteryBase.ItimLotteryState",
+              name: "state",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "expiredTime",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "drawTime",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "drawNumber",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "buyCount",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryMaxNumber",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryMinNumber",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryReward",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "lotteryRoomActives",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomActivesLength",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "lotteryRoomCapacity",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "renounceRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "revokeRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_tokenContract",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_treasuryAccount",
+              type: "address",
+            },
+          ],
+          name: "setAccounts",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_cost",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryCost",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_min",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_max",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryNumberRange",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_reward",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryReward",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_capacity",
+              type: "uint256",
+            },
+          ],
+          name: "setLotteryRoomCap",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_expiredTime",
+              type: "uint256",
+            },
+          ],
+          name: "startBuyingLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "stopBuyingLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "tokenContractAccount",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "treasuryAccount",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        ADMIN_ROLE: "contracts/ItimLotteryBase.sol",
+        DEFAULT_ADMIN_ROLE: "contracts/ItimLotteryBase.sol",
+        _calculateRewardOfLotteryNumber: "contracts/ItimLotteryBase.sol",
+        buyLottery: "contracts/ItimLotteryBase.sol",
+        claimLottery: "contracts/ItimLotteryBase.sol",
+        declareLottery: "contracts/ItimLotteryBase.sol",
+        drawRandomNumber: "contracts/ItimLotteryBase.sol",
+        fastStartLottery: "contracts/ItimLotteryBase.sol",
+        fastStopLottery: "contracts/ItimLotteryBase.sol",
+        getRewardOfLottery: "contracts/ItimLotteryBase.sol",
+        getRoleAdmin: "contracts/ItimLotteryBase.sol",
+        grantRole: "contracts/ItimLotteryBase.sol",
+        hasRole: "contracts/ItimLotteryBase.sol",
+        isLotteryRoomFull: "contracts/ItimLotteryBase.sol",
+        isValidNumber: "contracts/ItimLotteryBase.sol",
+        lastestLotteryId: "contracts/ItimLotteryBase.sol",
+        lotteryBuyCount: "contracts/ItimLotteryBase.sol",
+        lotteryBuyData: "contracts/ItimLotteryBase.sol",
+        lotteryBuyerData: "contracts/ItimLotteryBase.sol",
+        lotteryCost: "contracts/ItimLotteryBase.sol",
+        lotteryData: "contracts/ItimLotteryBase.sol",
+        lotteryMaxNumber: "contracts/ItimLotteryBase.sol",
+        lotteryMinNumber: "contracts/ItimLotteryBase.sol",
+        lotteryReward: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActives: "contracts/ItimLotteryBase.sol",
+        lotteryRoomActivesLength: "contracts/ItimLotteryBase.sol",
+        lotteryRoomCapacity: "contracts/ItimLotteryBase.sol",
+        owner: "contracts/ItimLotteryBase.sol",
+        renounceRole: "contracts/ItimLotteryBase.sol",
+        revokeRole: "contracts/ItimLotteryBase.sol",
+        setAccounts: "contracts/ItimLotteryBase.sol",
+        setLotteryCost: "contracts/ItimLotteryBase.sol",
+        setLotteryNumberRange: "contracts/ItimLotteryBase.sol",
+        setLotteryReward: "contracts/ItimLotteryBase.sol",
+        setLotteryRoomCap: "contracts/ItimLotteryBase.sol",
         startBuyingLottery: "contracts/ItimLotteryBase.sol",
         stopBuyingLottery: "contracts/ItimLotteryBase.sol",
         supportsInterface: "contracts/ItimLotteryBase.sol",
@@ -5269,7 +9312,7 @@ const deployedContracts = {
       },
     },
     ItimLotteryTestToken: {
-      address: "0xD0552DD8058adDE1D705962b92571c6065F1B147",
+      address: "0xB3D23BfaBBD3e66be964944D802917113DC6C5C2",
       abi: [
         {
           inputs: [

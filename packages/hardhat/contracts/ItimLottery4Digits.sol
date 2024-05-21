@@ -11,8 +11,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 /**
  * Itim Lottery 4 Digits
  * Author: chan1sook
- * Revision: 1
- * Last Updated: 2024-05-14 22:12
+ * Revision: 2
+ * Last Updated: 2024-05-21 13:00
  */
 contract ItimLottery4Digits is ItimLotteryBase {
 	uint256 public lotteryReward2nd = lotteryCost * 2;
@@ -20,6 +20,9 @@ contract ItimLottery4Digits is ItimLotteryBase {
 	
 	constructor(address _owner, address[] memory _admins, address _tokenContractAccount, address _treasuryAccount, uint256 _randomSeed) ItimLotteryBase(_owner, _admins, _tokenContractAccount, _treasuryAccount, _randomSeed) {
 		setLotteryNumberRange(0, 9999);
+		setLotteryCost(10 ether);
+		setLotteryReward(lotteryCost * 2500); // 2500x of [lotteryCost]
+		setLotteryOthersReward(lotteryCost * 250, lotteryCost * 25); // 250x, 25x of [lotteryCost]
 	}
 
 	/// Prize

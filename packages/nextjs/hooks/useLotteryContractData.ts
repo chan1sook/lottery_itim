@@ -1,6 +1,11 @@
 import { useScaffoldReadContract } from "./scaffold-eth";
 
-export type LotteryBasicContractName = "ItimLottery2Digits" | "ItimLottery3Digits" | "ItimLottery4Digits";
+export type LotteryBasicContractName =
+  | "ItimLottery2Digits"
+  | "ItimLottery3Digits"
+  | "ItimLottery4Digits"
+  | "ItimLottery12Numbers"
+  | "ItimLotteryOddEven";
 
 export type LotteryContractData = {
   contractName: LotteryBasicContractName;
@@ -13,6 +18,8 @@ export type LotteryContractData = {
   lotteryReward?: bigint;
   lotteryReward2nd?: bigint;
   lotteryReward3rd?: bigint;
+  roomActive?: bigint;
+  roomCapacity?: bigint;
   tokenContractAccount?: string;
   treasuryAccount?: string;
 };
@@ -28,6 +35,11 @@ export const useLotteryContractData = (contractName: LotteryBasicContractName = 
     functionName: "owner",
   });
 
+  const { data: lotteryRoomCapacity } = useScaffoldReadContract({
+    contractName: contractName,
+    functionName: "lotteryRoomCapacity",
+  });
+
   const { data: lotteryMinNumber } = useScaffoldReadContract({
     contractName: contractName,
     functionName: "lotteryMinNumber",
@@ -36,6 +48,11 @@ export const useLotteryContractData = (contractName: LotteryBasicContractName = 
   const { data: lotteryMaxNumber } = useScaffoldReadContract({
     contractName: contractName,
     functionName: "lotteryMaxNumber",
+  });
+
+  const { data: lotteryRoomActivesLength } = useScaffoldReadContract({
+    contractName: contractName,
+    functionName: "lotteryRoomActivesLength",
   });
 
   const { data: lotteryCost } = useScaffoldReadContract({
@@ -73,6 +90,8 @@ export const useLotteryContractData = (contractName: LotteryBasicContractName = 
     ready: false,
     lastestId: typeof lastestId === "bigint" ? lastestId : undefined,
     owner: typeof owner === "string" ? owner : undefined,
+    roomActive: typeof lotteryRoomActivesLength === "bigint" ? lotteryRoomActivesLength : undefined,
+    roomCapacity: typeof lotteryRoomCapacity === "bigint" ? lotteryRoomCapacity : undefined,
     lotteryMinNumber: typeof lotteryMinNumber === "bigint" ? lotteryMinNumber : undefined,
     lotteryMaxNumber: typeof lotteryMaxNumber === "bigint" ? lotteryMaxNumber : undefined,
     lotteryCost: typeof lotteryCost === "bigint" ? lotteryCost : undefined,
@@ -86,6 +105,8 @@ export const useLotteryContractData = (contractName: LotteryBasicContractName = 
   response.ready =
     typeof response.lastestId === "bigint" &&
     typeof owner === "string" &&
+    typeof lotteryRoomActivesLength === "bigint" &&
+    typeof lotteryRoomCapacity === "bigint" &&
     typeof lotteryMinNumber === "bigint" &&
     typeof lotteryMaxNumber === "bigint" &&
     typeof lotteryCost === "bigint" &&

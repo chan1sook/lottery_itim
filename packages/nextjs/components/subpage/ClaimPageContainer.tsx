@@ -13,9 +13,9 @@ type ClaimPageContainerProp = {
   children?: ReactNode;
   claimerAccount?: string;
   lotteryNumberData: LotteryNumberData;
-  lotteryNumber: string;
+  lotteryNumber: bigint;
   isBusy?: boolean;
-  setLotteryNumber: Dispatch<SetStateAction<string>>;
+  setLotteryNumber: Dispatch<SetStateAction<bigint>>;
   doClaimLottery: () => void;
 };
 
@@ -37,7 +37,7 @@ export const ClaimPageContainer = ({
   const isError = !claimerAccount || !isOwned || lotteryNumberData.claimed || isNumberInvalid || !isCanClaim;
 
   function setLotteryNumberValue(val: bigint | string) {
-    setLotteryNumber(val.toString());
+    setLotteryNumber(typeof val === "bigint" ? val : BigInt(val));
   }
 
   return (
@@ -52,8 +52,7 @@ export const ClaimPageContainer = ({
         <ConnectAddressContainer />
       </div>
       {children}
-      <div className="w-full px-6 max-w-screen-md flex flex-col gap-y-2 items-stretch">
-        <LotteryNumberRangeContainer contractData={contractData} />
+      <div className="w-full px-6 max-w-screen-md flex flex-col gap-y-2 items-stretch rounded-sm">
         <div>Enter Number:</div>
         <div>
           <IntegerInput
@@ -63,6 +62,7 @@ export const ClaimPageContainer = ({
             onChange={setLotteryNumberValue}
           />
         </div>
+        <LotteryNumberRangeContainer contractData={contractData} />
         <div>Reward:</div>
         <div>
           <ItimTokenInput

@@ -6,7 +6,6 @@ import { useAccount } from "wagmi";
 import { Digit2LotteryContainer } from "~~/components/lottery-containers/DetailGameContainer";
 import { LotteryCowndownContainer } from "~~/components/lottery-containers/LotteryCountdownContainer";
 import { Digit2LotteryRewardContainer } from "~~/components/lottery-containers/RewardContainer";
-import { IntegerVariant, isValidInteger } from "~~/components/scaffold-eth";
 import { BuyPageContainer } from "~~/components/subpage/BuyPageContainer";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { LotteryBasicContractName } from "~~/hooks/useLotteryContractData";
@@ -16,24 +15,24 @@ type PageProps = {
   params: { id?: string };
 };
 const BuyLottery: NextPage<PageProps> = ({ params }: PageProps) => {
-  const id = typeof params.id === "string" ? params.id : "0";
-  const [lotteryNumber, setLotteryNumber] = useState("");
+  const id = BigInt(typeof params.id === "string" ? params.id : "0");
+  const [lotteryNumber, setLotteryNumber] = useState(BigInt(0));
 
   const contractName: LotteryBasicContractName = "ItimLottery2Digits";
   const { isPending, isMining, writeContractAsync2: writeContractAsync } = useScaffoldWriteContract(contractName);
   const { address } = useAccount();
 
   const lotteryNumberData = useLotteryNumberData({
-    id: BigInt(id),
+    id: id,
     contractName: contractName,
-    lotteryNumber: isValidInteger(IntegerVariant.UINT256, lotteryNumber) ? BigInt(lotteryNumber) : BigInt(0),
+    lotteryNumber: lotteryNumber,
   });
   const lotteryData = lotteryNumberData.lotteryData;
 
   async function buyLottery() {
     await writeContractAsync({
       functionName: "buyLottery",
-      args: [BigInt(id), BigInt(lotteryNumber)],
+      args: [id, lotteryNumber],
     });
   }
 

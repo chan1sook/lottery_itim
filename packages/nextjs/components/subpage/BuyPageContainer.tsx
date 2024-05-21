@@ -13,9 +13,9 @@ type BuyPageContainerProp = {
   children?: ReactNode;
   buyerAccount?: string;
   lotteryNumberData: LotteryNumberData;
-  lotteryNumber: string;
+  lotteryNumber: bigint;
   isBusy?: boolean;
-  setLotteryNumber: Dispatch<SetStateAction<string>>;
+  setLotteryNumber: Dispatch<SetStateAction<bigint>>;
   doBuyLottery: () => void;
 };
 
@@ -37,7 +37,7 @@ export const BuyPageContainer = ({
   const isError = !buyerAccount || lotteryNumberData.owned || isNumberInvalid || !isCanBuy;
 
   function setLotteryNumberValue(val: bigint | string) {
-    setLotteryNumber(val.toString());
+    setLotteryNumber(typeof val === "bigint" ? val : BigInt(val));
   }
 
   return (

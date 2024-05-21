@@ -121,3 +121,43 @@ export const Digit4LotteryRewardContainer = ({ contractData }: { contractData: L
 
   return <RewardTableContainer rows={contents} />;
 };
+
+export const TwelveNumberLotteryRewardContainer = ({ contractData }: { contractData: LotteryContractData }) => {
+  const { data: itimSymbol } = useScaffoldReadContract({
+    contractName: tokenContractName,
+    functionName: "symbol",
+  });
+
+  const contents: RewardRow[] = [
+    {
+      title: "Exact",
+      reward: contractData.lotteryReward && (
+        <>
+          {formatEther(contractData.lotteryReward)} {itimSymbol || "Ξ"}
+        </>
+      ),
+    },
+  ];
+
+  return <RewardTableContainer rows={contents} />;
+};
+
+export const OddEvenLotteryRewardContainer = ({ contractData }: { contractData: LotteryContractData }) => {
+  const { data: itimSymbol } = useScaffoldReadContract({
+    contractName: tokenContractName,
+    functionName: "symbol",
+  });
+
+  const contents: RewardRow[] = [
+    {
+      title: "Match Odd/Even",
+      reward: contractData.lotteryReward && (
+        <>
+          {formatEther(contractData.lotteryReward)} {itimSymbol || "Ξ"}
+        </>
+      ),
+    },
+  ];
+
+  return <RewardTableContainer rows={contents} />;
+};
