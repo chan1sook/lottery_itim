@@ -1,5 +1,6 @@
 import { useScaffoldReadContract } from "./scaffold-eth";
-import { LotteryBasicContractName, LotteryContractData, useLotteryContractData } from "./useLotteryContractData";
+import { LotteryContractData, useLotteryContractData } from "./useLotteryContractData";
+import { LotteryBasicContractName, lottery2DigitsContractName } from "~~/utils/extra";
 
 export enum LotteryState {
   NOT_STARTED,
@@ -40,7 +41,7 @@ type LotteryDataProp = {
   id: bigint;
   contractName?: LotteryBasicContractName;
 };
-export const useLotteryData = ({ id, contractName = "ItimLottery2Digits" }: LotteryDataProp) => {
+export const useLotteryData = ({ id, contractName = lottery2DigitsContractName }: LotteryDataProp) => {
   const { data: lotteryData } = useScaffoldReadContract({
     contractName: contractName,
     functionName: "lotteryData",
@@ -76,7 +77,7 @@ export const useLotteryData = ({ id, contractName = "ItimLottery2Digits" }: Lott
   return response;
 };
 
-export const useLastestLotteryData = (contractName: LotteryBasicContractName = "ItimLottery2Digits") => {
+export const useLastestLotteryData = (contractName: LotteryBasicContractName = lottery2DigitsContractName) => {
   const { data: id } = useScaffoldReadContract({
     contractName: contractName,
     functionName: "lastestLotteryId",

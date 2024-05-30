@@ -6,6 +6,7 @@ import { Address, formatEther } from "viem";
 import { useBalance, useBlockNumber } from "wagmi";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
+import { useTokenSymbol } from "~~/hooks/useTokenData";
 import { tokenContractName } from "~~/utils/extra";
 
 type ItimBalanceProps = {
@@ -29,10 +30,7 @@ export const ItimBalance = ({ address, className = "", ethMode }: ItimBalancePro
     args: [address],
   });
 
-  const { data: itimSymbol } = useScaffoldReadContract({
-    contractName: tokenContractName,
-    functionName: "symbol",
-  });
+  const itimSymbol = useTokenSymbol();
 
   const {
     data: balance,

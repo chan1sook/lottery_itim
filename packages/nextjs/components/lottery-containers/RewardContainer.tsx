@@ -1,8 +1,7 @@
 import { ReactNode } from "react";
 import { formatEther } from "viem";
-import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { LotteryContractData } from "~~/hooks/useLotteryContractData";
-import { tokenContractName } from "~~/utils/extra";
+import { useTokenSymbol } from "~~/hooks/useTokenData";
 
 type RewardRow = {
   title: ReactNode;
@@ -15,7 +14,7 @@ const RewardTableContainer = ({ rows = [] }: { rows: RewardRow[] }) => {
   }
 
   return (
-    <div className="transistion-all duration-100 w-full max-w-xs relative bg-base-100 rounded-3xl">
+    <div className="transistion-all duration-100 w-full max-w-xs relative border shadow bg-base-100 rounded-3xl">
       <div className="h-full flex flex-col gap-x-6 gap-y-4 px-6 py-6">
         <table className="table table-zebra table-sm">
           <thead>
@@ -39,10 +38,7 @@ const RewardTableContainer = ({ rows = [] }: { rows: RewardRow[] }) => {
 };
 
 export const Digit2LotteryRewardContainer = ({ contractData }: { contractData: LotteryContractData }) => {
-  const { data: itimSymbol } = useScaffoldReadContract({
-    contractName: tokenContractName,
-    functionName: "symbol",
-  });
+  const itimSymbol = useTokenSymbol();
 
   const contents: RewardRow[] = [
     {
@@ -59,10 +55,7 @@ export const Digit2LotteryRewardContainer = ({ contractData }: { contractData: L
 };
 
 export const Digit3LotteryRewardContainer = ({ contractData }: { contractData: LotteryContractData }) => {
-  const { data: itimSymbol } = useScaffoldReadContract({
-    contractName: tokenContractName,
-    functionName: "symbol",
-  });
+  const itimSymbol = useTokenSymbol();
 
   const contents: RewardRow[] = [
     {
@@ -87,10 +80,7 @@ export const Digit3LotteryRewardContainer = ({ contractData }: { contractData: L
 };
 
 export const Digit4LotteryRewardContainer = ({ contractData }: { contractData: LotteryContractData }) => {
-  const { data: itimSymbol } = useScaffoldReadContract({
-    contractName: tokenContractName,
-    functionName: "symbol",
-  });
+  const itimSymbol = useTokenSymbol();
 
   const contents: RewardRow[] = [
     {
@@ -123,10 +113,7 @@ export const Digit4LotteryRewardContainer = ({ contractData }: { contractData: L
 };
 
 export const TwelveNumberLotteryRewardContainer = ({ contractData }: { contractData: LotteryContractData }) => {
-  const { data: itimSymbol } = useScaffoldReadContract({
-    contractName: tokenContractName,
-    functionName: "symbol",
-  });
+  const itimSymbol = useTokenSymbol();
 
   const contents: RewardRow[] = [
     {
@@ -143,10 +130,7 @@ export const TwelveNumberLotteryRewardContainer = ({ contractData }: { contractD
 };
 
 export const OddEvenLotteryRewardContainer = ({ contractData }: { contractData: LotteryContractData }) => {
-  const { data: itimSymbol } = useScaffoldReadContract({
-    contractName: tokenContractName,
-    functionName: "symbol",
-  });
+  const itimSymbol = useTokenSymbol();
 
   const contents: RewardRow[] = [
     {

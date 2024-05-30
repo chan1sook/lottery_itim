@@ -3,22 +3,21 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import "hardhat/console.sol";
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./ItimLotteryToken.sol";
+
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
 /**
  * Itim Lottery Base Contract
  * Author: chan1sook
- * Revision: 2
- * Last Updated: 2024-05-21 13:00
+ * Revision: 4
+ * Last Updated: 2024-05-30 9:00
  */
 contract ItimLotteryBase is AccessControl {
 	address public immutable owner;
 	bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
 	
 	address public tokenContractAccount;
-	address public treasuryAccount;
 
 	uint256 public lotteryCost = 1 ether;
 	uint256 public lotteryMinNumber = 0;
@@ -48,10 +47,15 @@ contract ItimLotteryBase is AccessControl {
 	uint256 public lotteryRoomCapacity = 1;
 	uint256[] public lotteryRoomActives;
 
-	constructor(address _owner, address[] memory _admins, address _tokenContractAccount, address _treasuryAccount, uint256 _randomSeed) {
+	event LotteryStateChange(uint256 indexed id, ItimLotteryState indexed state);
+	event LotteryBuy(uint256 indexed id, address indexed buyer, uint256 number);
+	event LotteryRoll(uint256 indexed id, uint256 number);
+	event LotteryClaim(uint256 indexed id, address indexed claimer, uint256 number, uint256 amount);
+
+	constructor(address _owner, address[] memory _admins, address _tokenContractAccount, uint256 _randomSeed) {
 		owner = _owner;
 		randomSeed = _randomSeed;
-		setAccounts(_tokenContractAccount, _treasuryAccount);
+		setTokenContractAccount(_tokenContractAccount);
 		
         _grantRole(ADMIN_ROLE, _owner);
 		uint256 _adminsLength = _admins.length;
@@ -64,19 +68,28 @@ contract ItimLotteryBase is AccessControl {
 		require(msg.sender == owner || hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin or owner");
 		_;
 	}
-
+	
 	function lotteryRoomActivesLength() public view returns (uint256) {
 		return lotteryRoomActives.length;
 	}
 	
 	/// Admin Setter Section
 
-	function setAccounts(address _tokenContract, address _treasuryAccount) public isAdminOrOwner {
+	function setAdminRole(address _address, bool _isAdmin) public isAdminOrOwner {
+		require(msg.sender != _address, "Not self");
+		require( _address != owner, "Owner always admin");
+		
+		if(_isAdmin) {
+        	_grantRole(ADMIN_ROLE, _address);
+		} else {
+        	_revokeRole(ADMIN_ROLE, _address);
+		}
+	}
+	
+	function setTokenContractAccount(address _tokenContract) public isAdminOrOwner {
 		tokenContractAccount = _tokenContract;
-		treasuryAccount = _treasuryAccount;
 
 		console.log("Token Contract Account", tokenContractAccount);
-		console.log("Treasury Account", treasuryAccount);
 	}
 
 	function setLotteryCost(uint256 _cost) public isAdminOrOwner {
@@ -91,9 +104,20 @@ contract ItimLotteryBase is AccessControl {
 		lotteryRoomCapacity = _capacity;
 	}
 
-	/// Change Lottery Section
+	/// Change Lottery Section helper function
+	function _updateLotteryState(uint256 _id, ItimLotteryState state) private {
+		lotteryData[_id].state = state;
+		emit LotteryStateChange(_id, state);
+	}
+
+	function _setRollNumber(uint256 _id, uint256 number) private {
+		require(isValidNumber(number), "Invalid roll number");
+		lotteryData[_id].drawNumber = number;
+		emit LotteryRoll(_id, number);
+	}
+
 	function _startLotteryCmd(uint256 _id, uint256 _expiredTime) private {
-		lotteryData[_id].state = ItimLotteryState.OPENING;
+		_updateLotteryState(_id, ItimLotteryState.OPENING);
 		lotteryData[_id].expiredTime = _expiredTime;
 
 		require(lotteryRoomActives.length < lotteryRoomCapacity, "Reach maximum room capacity");
@@ -115,9 +139,10 @@ contract ItimLotteryBase is AccessControl {
         lotteryRoomActives.pop();
 	}
 
+	/// Change Lottery Section
 	function declareLottery(uint256 _id) public isAdminOrOwner {
 		require(lotteryData[_id].state == ItimLotteryState.NOT_STARTED, "Invalid lottery state");
-		lotteryData[_id].state = ItimLotteryState.DECLARED;
+		_updateLotteryState(_id, ItimLotteryState.DECLARED);
 
 		if(_id > lastestLotteryId) {
 			lastestLotteryId = _id;
@@ -131,15 +156,22 @@ contract ItimLotteryBase is AccessControl {
 	
 	function stopBuyingLottery(uint256 _id) public isAdminOrOwner {
 		require(lotteryData[_id].state == ItimLotteryState.OPENING, "Invalid lottery state");
-		lotteryData[_id].state = ItimLotteryState.EXPIRED;
+		_updateLotteryState(_id, ItimLotteryState.EXPIRED);
 		_closeLotteryCmd(_id);
 	}
 
 	function drawRandomNumber(uint256 _id) public isAdminOrOwner {
 		require(lotteryData[_id].state == ItimLotteryState.EXPIRED, "Invalid lottery state");
-		lotteryData[_id].state = ItimLotteryState.DRAWED;
+		_updateLotteryState(_id, ItimLotteryState.DRAWED);
 		lotteryData[_id].drawTime = block.timestamp;
-		lotteryData[_id].drawNumber = _rollRng();
+		_setRollNumber(_id, _rollRng());
+	}
+
+	function drawRandomNumberWithResult(uint256 _id, uint256 number) public isAdminOrOwner {
+		require(lotteryData[_id].state == ItimLotteryState.EXPIRED, "Invalid lottery state");
+		_updateLotteryState(_id, ItimLotteryState.DRAWED);
+		lotteryData[_id].drawTime = block.timestamp;
+		_setRollNumber(_id, number);
 	}
 
 	/// Fast Method
@@ -155,13 +187,32 @@ contract ItimLotteryBase is AccessControl {
 
 	function fastStopLottery(uint256 _id) public isAdminOrOwner {
 		require(lotteryData[_id].state == ItimLotteryState.OPENING, "Invalid lottery state");
-		lotteryData[_id].state = ItimLotteryState.DRAWED;
+		_updateLotteryState(_id, ItimLotteryState.DRAWED);
 		lotteryData[_id].drawTime = block.timestamp;
-		lotteryData[_id].drawNumber = _rollRng();
+		_setRollNumber(_id, _rollRng());
 		_closeLotteryCmd(_id);
 	}
 
+	function fastStopLotteryWithResult(uint256 _id, uint256 number) public isAdminOrOwner {
+		require(lotteryData[_id].state == ItimLotteryState.OPENING, "Invalid lottery state");
+		_updateLotteryState(_id, ItimLotteryState.DRAWED);
+		lotteryData[_id].drawTime = block.timestamp;
+		_setRollNumber(_id, number);
+		_closeLotteryCmd(_id);
+	}
 
+	function fastStopLotteryAndRestart(uint256 _id, uint256 _expiredTime) public isAdminOrOwner {
+		require(lotteryData[_id].state == ItimLotteryState.OPENING, "Invalid lottery state");
+		fastStopLottery(_id);
+		fastStartLottery(lastestLotteryId + 1, _expiredTime);
+	}
+
+	function fastStopLotteryWithResultAndRestart(uint256 _id, uint256 number, uint256 _expiredTime) public isAdminOrOwner {
+		require(lotteryData[_id].state == ItimLotteryState.OPENING, "Invalid lottery state");
+		fastStopLotteryWithResult(_id, number);
+		fastStartLottery(lastestLotteryId + 1, _expiredTime);
+	}
+	
 	/// Lottery Number Section
 	
 	function setLotteryNumberRange(uint256 _min, uint256 _max) public isAdminOrOwner {
@@ -201,7 +252,9 @@ contract ItimLotteryBase is AccessControl {
 		lotteryBuyData[_id][_number].buyTime = block.timestamp;
 		lotteryBuyerData[_id][msg.sender].push(_number);
 		
-		IERC20(tokenContractAccount).transferFrom(msg.sender, treasuryAccount, lotteryCost);
+		// use burn instend treasuryAccount
+		ItimLotteryToken(tokenContractAccount).burnTo(msg.sender, lotteryCost);
+		emit LotteryBuy(_id, msg.sender, _number);
 	}
 
 	function _calculateRewardOfLotteryNumber(uint256 _id, uint256 _number) virtual public view returns (uint256) {
@@ -230,7 +283,9 @@ contract ItimLotteryBase is AccessControl {
 		
 		uint256 reward = getRewardOfLottery(_id, _number);
 		if(reward > 0) {
-			IERC20(tokenContractAccount).transferFrom(treasuryAccount, msg.sender, reward);
+			// use mint instend treasuryAccount
+			ItimLotteryToken(tokenContractAccount).mintTo(msg.sender, reward);
 		}
+		emit LotteryClaim(_id, msg.sender, _number, reward);
 	}
 }

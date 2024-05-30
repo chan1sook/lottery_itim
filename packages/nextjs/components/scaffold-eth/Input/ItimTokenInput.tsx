@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { CommonInputProps, InputBase, SIGNED_NUMBER_REGEX } from "~~/components/scaffold-eth";
-import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import { tokenContractName } from "~~/utils/extra";
+import { useTokenSymbol } from "~~/hooks/useTokenData";
 
 function etherValueToDisplayValue(etherValue: string) {
   return etherValue;
@@ -22,13 +21,11 @@ export const ItimTokenInput = ({
   placeholder,
   onChange,
   disabled,
-}: CommonInputProps & { usdMode?: boolean }) => {
+  unit,
+}: CommonInputProps & { unit?: string }) => {
   const [transitoryDisplayValue, setTransitoryDisplayValue] = useState<string>();
 
-  const { data: itimSymbol } = useScaffoldReadContract({
-    contractName: tokenContractName,
-    functionName: "symbol",
-  });
+  const itimSymbol = useTokenSymbol();
 
   // The displayValue is derived from the ether value that is controlled outside of the component
   // In usdMode, it is converted to its usd value, in regular mode it is unaltered
@@ -66,7 +63,7 @@ export const ItimTokenInput = ({
       placeholder={placeholder}
       onChange={handleChangeNumber}
       disabled={disabled}
-      suffix={<span className="pr-4 -ml-2 text-gray-700 self-center">{itimSymbol}</span>}
+      suffix={<span className="pr-4 -ml-2 text-gray-700 self-center whitespace-nowrap">{unit || itimSymbol}</span>}
     />
   );
 };

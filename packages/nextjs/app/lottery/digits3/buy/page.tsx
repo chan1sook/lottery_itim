@@ -9,14 +9,14 @@ import { Digit3LotteryRewardContainer } from "~~/components/lottery-containers/R
 import { BuyMultiplePageContainer } from "~~/components/subpage/BuyMultiplePageContainer";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useLotteryActiveRoomAt } from "~~/hooks/useLotteryActiveRoomAt";
-import { LotteryBasicContractName } from "~~/hooks/useLotteryContractData";
 import { useLotteryNumberData } from "~~/hooks/useLotteryNumberData";
+import { lottery3DigitsContractName } from "~~/utils/extra";
 
 const BuyLottery: NextPage = () => {
   const [roomNth, setRoomNth] = useState(BigInt(0));
   const [lotteryNumber, setLotteryNumber] = useState(BigInt(0));
 
-  const contractName: LotteryBasicContractName = "ItimLottery3Digits";
+  const contractName = lottery3DigitsContractName;
   const { isPending, isMining, writeContractAsync2: writeContractAsync } = useScaffoldWriteContract(contractName);
   const { address } = useAccount();
 

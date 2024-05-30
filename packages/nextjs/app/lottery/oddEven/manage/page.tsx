@@ -7,11 +7,11 @@ import { OddEvenLotteryContainer } from "~~/components/lottery-containers/Detail
 import { OddEvenLotteryRewardContainer } from "~~/components/lottery-containers/RewardContainer";
 import { StatusBadge } from "~~/components/lottery-containers/StatusBadge";
 import { ManageLotteryContainer } from "~~/components/subpage/ManageLotteryContainer";
-import { LotteryBasicContractName } from "~~/hooks/useLotteryContractData";
 import { useLastestLotteryData } from "~~/hooks/useLotteryData";
+import { lotteryOddEvenContractName } from "~~/utils/extra";
 
 const ManageLottery: NextPage = () => {
-  const contractName: LotteryBasicContractName = "ItimLotteryOddEven";
+  const contractName = lotteryOddEvenContractName;
   const { address } = useAccount();
   const lotteryData = useLastestLotteryData(contractName);
 

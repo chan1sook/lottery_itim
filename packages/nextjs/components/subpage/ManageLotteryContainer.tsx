@@ -2,15 +2,16 @@ import { ChangeEvent, ReactNode, useState } from "react";
 import { ConnectAddressContainer } from "../ConnectAddressContainer";
 import { LotteryButton } from "../LotteryButton";
 import { LotteryNumberRangeContainer } from "../lottery-containers/LotteryNumberRangeContainer";
-import { AddressInput, IntegerInput } from "../scaffold-eth";
+import { IntegerInput } from "../scaffold-eth";
 import { ItimTokenInput } from "../scaffold-eth/Input/ItimTokenInput";
 import dayjs from "dayjs";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
-import { formatEther, isAddress, parseEther } from "viem";
+import { formatEther, parseEther } from "viem";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useLotteryActiveRoomAt } from "~~/hooks/useLotteryActiveRoomAt";
 import { LotteryContractData, useIsLotteryContractAdmin } from "~~/hooks/useLotteryContractData";
 import { LotteryData, LotteryState, useLotteryData } from "~~/hooks/useLotteryData";
+import { lottery3DigitsContractName, lottery4DigitsContractName } from "~~/utils/extra";
 
 type LabelFromAdminModifierProp = {
   admin?: string;
@@ -60,6 +61,14 @@ const GameActionButton = ({
           isError={!isAdmin}
           loading={isWaitWriting}
           onClick={() => onFastStopLotteryGame(lotteryData.id)}
+        />
+      )}
+      {lotteryData.state == LotteryState.DRAWED && (
+        <LotteryButton
+          label={_getLabel("Start new game")}
+          isError={!isAdmin}
+          loading={isWaitWriting}
+          onClick={() => onFastStartLotteryGame(lotteryData.id + BigInt(1))}
         />
       )}
     </>
@@ -143,8 +152,6 @@ export const ManageLotteryContainer = ({ children, adminAccount, lotteryData }: 
   const [lotteryReward, setLotteryReward] = useState("10.0");
   const [lotteryReward2nd, setLotteryReward2nd] = useState("2.0");
   const [lotteryReward3rd, setLotteryReward3rd] = useState("1.5");
-  const [tokenContractAccount, setTokenContractAccount] = useState("");
-  const [treasuryAccount, setTreasuryAccount] = useState("");
   const [datetimeStr, setDatetimeStr] = useState(dayjs().format("YYYY-MM-DDTHH:mm"));
 
   const [waitContactData, setWaitContractData] = useState(false);
@@ -156,20 +163,18 @@ export const ManageLotteryContainer = ({ children, adminAccount, lotteryData }: 
 
   if (!waitContactData && contractData.ready) {
     setWaitContractData(true);
+    setRoomCapacity(contractData.roomCapacity || BigInt(1));
     setLotteryCost(formatEther(contractData.lotteryCost || BigInt(0)));
     setLotteryReward(formatEther(contractData.lotteryReward || BigInt(0)));
-    setTokenContractAccount(contractData.tokenContractAccount || "");
-    setTreasuryAccount(contractData.treasuryAccount || "");
   }
 
   const isSetLotteryCostInvalid = !isAdmin;
   const isSetLotteryRewardInvalid = !isAdmin;
-  const isSetAccountCostInvalid = !(isAdmin && isAddress(treasuryAccount) && isAddress(tokenContractAccount));
   const isWaitWriting = !contractData.ready || isPending || isMining;
 
   const newLotteryData = useLotteryData({
     id:
-      lotteryData.id !== BigInt(0) && typeof contractData.lastestId === "bigint"
+      lotteryData.state !== LotteryState.NOT_STARTED && typeof contractData.lastestId === "bigint"
         ? contractData.lastestId + BigInt(1)
         : BigInt(0),
     contractName: contractData.contractName,
@@ -207,12 +212,12 @@ export const ManageLotteryContainer = ({ children, adminAccount, lotteryData }: 
   }
 
   async function updateLotteryReward2nd(reward: bigint) {
-    if (contractName === "ItimLottery3Digits") {
+    if (contractName === lottery3DigitsContractName) {
       await writeContractAsync({
         functionName: "setLottery2ndReward",
         args: [reward],
       });
-    } else if (contractName === "ItimLottery4Digits") {
+    } else if (contractName === lottery4DigitsContractName) {
       await writeContractAsync({
         functionName: "setLotteryOthersReward",
         args: [reward, BigInt(lotteryReward3rd)],
@@ -221,19 +226,12 @@ export const ManageLotteryContainer = ({ children, adminAccount, lotteryData }: 
   }
 
   async function updateLotteryReward3rd(reward: bigint) {
-    if (contractName === "ItimLottery4Digits") {
+    if (contractName === lottery4DigitsContractName) {
       await writeContractAsync({
         functionName: "setLotteryOthersReward",
         args: [BigInt(lotteryReward2nd), reward],
       });
     }
-  }
-
-  async function updateAccounts(tokenAccount: string, treasuryAccount: string) {
-    await writeContractAsync({
-      functionName: "setAccounts",
-      args: [tokenAccount, treasuryAccount],
-    });
   }
 
   async function fastStartLotteryGame(gameid: bigint, ts: number) {
@@ -377,25 +375,6 @@ export const ManageLotteryContainer = ({ children, adminAccount, lotteryData }: 
             </div>
           </>
         )}
-        <div>Treasury Account:</div>
-        <div>
-          <AddressInput
-            value={treasuryAccount}
-            placeholder="Treasury Account"
-            onChange={setTreasuryAccount}
-          ></AddressInput>
-        </div>
-        <div className="flex flex-row justify-center">
-          <div className="w-full max-w-52">
-            <LotteryButton
-              label={_getLabel("Set")}
-              loading={isWaitWriting}
-              isError={isSetAccountCostInvalid}
-              disabled={isSetAccountCostInvalid}
-              onClick={() => updateAccounts(tokenContractAccount, treasuryAccount)}
-            />
-          </div>
-        </div>
       </div>
     </div>
   );

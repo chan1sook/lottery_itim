@@ -8,15 +8,15 @@ import { LotteryCowndownContainer } from "~~/components/lottery-containers/Lotte
 import { Digit3LotteryRewardContainer } from "~~/components/lottery-containers/RewardContainer";
 import { ClaimPageWithIdContainer } from "~~/components/subpage/ClaimPageWithIdContainer";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import { LotteryBasicContractName } from "~~/hooks/useLotteryContractData";
 import { useLotteryNumberData } from "~~/hooks/useLotteryNumberData";
+import { lottery3DigitsContractName } from "~~/utils/extra";
 
 const ClaimLottery: NextPage = () => {
   const [gameId, setGameId] = useState(BigInt(0));
   const [lotteryNumber, setLotteryNumber] = useState(BigInt(0));
   const [contractReady, setContractReady] = useState(false);
 
-  const contractName: LotteryBasicContractName = "ItimLottery3Digits";
+  const contractName = lottery3DigitsContractName;
   const { isPending, isMining, writeContractAsync2: writeContractAsync } = useScaffoldWriteContract(contractName);
   const { address } = useAccount();
 

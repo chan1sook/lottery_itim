@@ -2,6 +2,14 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { Contract } from "ethers";
 import { randomBytes } from "crypto";
+import wait from "wait";
+
+// prevent REPLACEMENT_UNDERPRICED problem
+async function waitSepolia() {
+  const sec = 45;
+  console.log(`Wait block update: ${sec} secs`);
+  await wait(sec * 1000);
+}
 
 /**
  * Deploys a contract named "YourContract" using the deployer account and
@@ -22,16 +30,15 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   */
 
   const chainId = await hre.getChainId();
-  // const isJBCChain = chainId === "8899";
-  const isHardhatChain = chainId === "31337";
-
-  const { deployer, developer, aon, treasuryAccount } = await hre.getNamedAccounts();
+  const { deployer, developer, aon, worker } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  const itimTokenContract = "ItimLotteryTestToken";
+  const isSepoliaChain = chainId === "11155111";
+
+  const itimTokenContractName = "ItimLotteryToken";
   const minters = [developer, aon];
 
-  const { address: tokenAddress, newlyDeployed } = await deploy(itimTokenContract, {
+  const { address: tokenAddress } = await deploy(itimTokenContractName, {
     from: deployer,
     args: [deployer, minters],
     log: true,
@@ -39,50 +46,76 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   });
 
   // Get the deployed contract to interact with it after deploying.
-  const itemTokenContract = await hre.ethers.getContract<Contract>(itimTokenContract, deployer);
-  console.log("address:", await itemTokenContract.getAddress());
+  const itimTokenContract = await hre.ethers.getContract<Contract>(itimTokenContractName, deployer);
+  console.log("address:", await itimTokenContract.getAddress());
   console.log("Minters:", minters);
-  if (newlyDeployed) {
-    await itemTokenContract.mintTo(treasuryAccount, BigInt(1000 * 10 ** 18));
+
+  const exchangeAdmins = minters;
+  const itimExchangeContract = "ItimLotteryExchange";
+
+  let justDeployed = false;
+  const { address: exchangeAddress, newlyDeployed: exchangeDeployed } = await deploy(itimExchangeContract, {
+    from: deployer,
+    args: [deployer, exchangeAdmins, tokenAddress],
+    log: true,
+    autoMine: true,
+  });
+  justDeployed = exchangeDeployed;
+
+  const MINTER_ROLE = await itimTokenContract.MINTER_ROLE();
+
+  if (!(await itimTokenContract.hasRole(MINTER_ROLE, exchangeAddress))) {
+    if (justDeployed && isSepoliaChain) {
+      await waitSepolia();
+    }
+
+    console.log("setMinterRole:", exchangeAddress);
+    await itimTokenContract.setMinterRole(exchangeAddress, true);
+    justDeployed = true;
   }
-  console.log("TreasuryAccount balance:", await itemTokenContract.balanceOf(treasuryAccount));
 
   const contractNames = [
     "ItimLottery2Digits",
     "ItimLottery3Digits",
     "ItimLottery4Digits",
-    "ItimLottery12Numbers",
+    "ItimLottery12NumbersRoom10",
+    "ItimLottery12NumbersRoom20",
+    "ItimLottery12NumbersRoom50",
+    "ItimLottery12NumbersRoom100",
+    "ItimLottery12NumbersRoom500",
     "ItimLotteryOddEven",
   ];
-  const lotteryAdmins = minters;
   for (const name of contractNames) {
     const seed = BigInt(`0x${randomBytes(32).toString("hex")}`);
     console.log("Seed:", seed);
 
-    await deploy(name, {
+    if (justDeployed && isSepoliaChain) {
+      await waitSepolia();
+    }
+
+    const lotteryAdmins = [worker].concat(minters);
+    const { address: lotteryAddress, newlyDeployed: lotteryDeployed } = await deploy(name, {
       from: deployer,
-      args: [deployer, lotteryAdmins, tokenAddress, treasuryAccount, seed],
+      args: [deployer, lotteryAdmins, tokenAddress, seed],
       log: true,
       autoMine: true,
     });
+    justDeployed = lotteryDeployed;
 
     // Get the deployed contract to interact with it after deploying.
     const itimLotteryContract = await hre.ethers.getContract<Contract>(name, deployer);
     console.log("Owner:", await itimLotteryContract.owner());
     console.log("Admins:", lotteryAdmins);
     console.log("TokenAddress:", await itimLotteryContract.tokenContractAccount());
-    console.log("TreasuryAccount:", await itimLotteryContract.treasuryAccount());
 
-    if (isHardhatChain) {
-      const itemTokenContract2 = await hre.ethers.getContract<Contract>(itimTokenContract, treasuryAccount);
-      await itemTokenContract2.approve(
-        itimLotteryContract.getAddress(),
-        BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935"),
-      );
-      console.log(
-        "Contract Allowance:",
-        await itemTokenContract2.allowance(treasuryAccount, itimLotteryContract.getAddress()),
-      );
+    if (!(await itimTokenContract.hasRole(MINTER_ROLE, lotteryAddress))) {
+      if (justDeployed && isSepoliaChain) {
+        await waitSepolia();
+      }
+
+      console.log("setMinterRole:", lotteryAddress);
+      await itimTokenContract.setMinterRole(lotteryAddress, true);
+      justDeployed = true;
     }
   }
 };

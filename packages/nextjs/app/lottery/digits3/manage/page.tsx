@@ -7,11 +7,11 @@ import { LotteryCowndownContainer } from "~~/components/lottery-containers/Lotte
 import { Digit3LotteryRewardContainer } from "~~/components/lottery-containers/RewardContainer";
 import { StatusBadge } from "~~/components/lottery-containers/StatusBadge";
 import { ManageLotteryContainer } from "~~/components/subpage/ManageLotteryContainer";
-import { LotteryBasicContractName } from "~~/hooks/useLotteryContractData";
 import { useLastestLotteryData } from "~~/hooks/useLotteryData";
+import { lottery3DigitsContractName } from "~~/utils/extra";
 
 const ManageLottery: NextPage = () => {
-  const contractName: LotteryBasicContractName = "ItimLottery3Digits";
+  const contractName = lottery3DigitsContractName;
   const { address } = useAccount();
   const lotteryData = useLastestLotteryData(contractName);
 

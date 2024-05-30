@@ -9,8 +9,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 /**
  * Itim Lottery Token Contract
  * Author: chan1sook
- * Revision: 2
- * Last Updated: 2024-05-21 13:00
+ * Revision: 4
+ * Last Updated: 2024-05-30 9:00
  */
 contract ItimLotteryToken is ERC20, AccessControl {
 	address public immutable owner;
@@ -30,7 +30,23 @@ contract ItimLotteryToken is ERC20, AccessControl {
 		_;
 	}
 
+	function setMinterRole(address _address, bool _isAdmin) public isMinterOrOwner {
+		require(msg.sender != _address, "Not self");
+		require( _address != owner, "Owner always minter");
+		
+		if(_isAdmin) {
+        	_grantRole(MINTER_ROLE, _address);
+		} else {
+        	_revokeRole(MINTER_ROLE, _address);
+		}
+	}
+
 	function mintTo(address target, uint256 amount) public isMinterOrOwner {
         _mint(target, amount);
+    }
+
+	
+	function burnTo(address target, uint256 amount) public isMinterOrOwner {
+        _burn(target, amount);
     }
 }

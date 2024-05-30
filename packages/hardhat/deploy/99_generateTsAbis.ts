@@ -101,6 +101,7 @@ function getContractDataFromDeployments() {
  */
 const generateTsAbis: DeployFunction = async function () {
   const TARGET_DIR = "../nextjs/contracts/";
+  const TARGET_DIR2 = "../worker/src/contracts/";
   const allContractsData = getContractDataFromDeployments();
 
   const fileContent = Object.entries(allContractsData).reduce((content, [chainId, chainConfig]) => {
@@ -120,8 +121,22 @@ const generateTsAbis: DeployFunction = async function () {
       },
     ),
   );
-
   console.log(`📝 Updated TypeScript contract definition file on ${TARGET_DIR}deployedContracts.ts`);
+
+  if (!fs.existsSync(TARGET_DIR2)) {
+    fs.mkdirSync(TARGET_DIR2);
+  }
+  fs.writeFileSync(
+    `${TARGET_DIR2}deployedContracts.ts`,
+    prettier.format(
+      `${generatedContractComment} import { GenericContractsDeclaration } from "../types"; \n\n
+ const deployedContracts = {${fileContent}} as const; \n\n export default deployedContracts satisfies GenericContractsDeclaration`,
+      {
+        parser: "typescript",
+      },
+    ),
+  );
+  console.log(`📝 Updated TypeScript contract definition file on ${TARGET_DIR2}deployedContracts.ts`);
 };
 
 export default generateTsAbis;

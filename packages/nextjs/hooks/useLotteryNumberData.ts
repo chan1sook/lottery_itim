@@ -1,6 +1,6 @@
 import { useScaffoldReadContract } from "./scaffold-eth";
-import { LotteryBasicContractName } from "./useLotteryContractData";
 import { LotteryData, LotteryState, useLotteryData } from "./useLotteryData";
+import { LotteryBasicContractName, lottery2DigitsContractName } from "~~/utils/extra";
 
 export type LotteryNumberData = {
   lotteryData: LotteryData;
@@ -22,7 +22,7 @@ type LotteryNumberDataProp = {
 export const useLotteryNumberData = ({
   id,
   lotteryNumber,
-  contractName = "ItimLottery2Digits",
+  contractName = lottery2DigitsContractName,
 }: LotteryNumberDataProp) => {
   const { data: isNumberValid } = useScaffoldReadContract({
     contractName: contractName,

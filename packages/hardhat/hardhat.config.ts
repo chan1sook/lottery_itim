@@ -37,6 +37,7 @@ const config: HardhatUserConfig = {
     },
     developer: "0xC70Edf3aB36E0D57eFD8f412A3460D225931A110",
     aon: "0x5572eAA48D9CF8Ae04C7813B5638349d641a7B91",
+    worker: "0xdfD8aD94C4AB86e21a2b8695e3791D28B83984Ef",
     treasuryAccount: {
       default: 0,
     },

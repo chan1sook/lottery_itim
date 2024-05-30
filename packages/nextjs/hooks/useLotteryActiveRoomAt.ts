@@ -1,5 +1,5 @@
 import { useScaffoldReadContract } from "./scaffold-eth";
-import { LotteryBasicContractName } from "./useLotteryContractData";
+import { LotteryBasicContractName } from "~~/utils/extra";
 
 type LotteryActiveRoomAtProps = {
   contractName: LotteryBasicContractName;

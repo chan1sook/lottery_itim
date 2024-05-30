@@ -1,11 +1,10 @@
 import { useScaffoldReadContract } from "./scaffold-eth";
-
-export type LotteryBasicContractName =
-  | "ItimLottery2Digits"
-  | "ItimLottery3Digits"
-  | "ItimLottery4Digits"
-  | "ItimLottery12Numbers"
-  | "ItimLotteryOddEven";
+import {
+  LotteryBasicContractName,
+  lottery2DigitsContractName,
+  lottery3DigitsContractName,
+  lottery4DigitsContractName,
+} from "~~/utils/extra";
 
 export type LotteryContractData = {
   contractName: LotteryBasicContractName;
@@ -21,10 +20,9 @@ export type LotteryContractData = {
   roomActive?: bigint;
   roomCapacity?: bigint;
   tokenContractAccount?: string;
-  treasuryAccount?: string;
 };
 
-export const useLotteryContractData = (contractName: LotteryBasicContractName = "ItimLottery2Digits") => {
+export const useLotteryContractData = (contractName: LotteryBasicContractName = lottery2DigitsContractName) => {
   const { data: lastestId } = useScaffoldReadContract({
     contractName: contractName,
     functionName: "lastestLotteryId",
@@ -70,11 +68,6 @@ export const useLotteryContractData = (contractName: LotteryBasicContractName = 
     functionName: "tokenContractAccount",
   });
 
-  const { data: treasuryAccount } = useScaffoldReadContract({
-    contractName: contractName,
-    functionName: "treasuryAccount",
-  });
-
   const { data: lotteryReward2nd } = useScaffoldReadContract({
     contractName: contractName,
     functionName: "lotteryReward2nd",
@@ -99,7 +92,6 @@ export const useLotteryContractData = (contractName: LotteryBasicContractName = 
     lotteryReward2nd: typeof lotteryReward2nd === "bigint" ? lotteryReward2nd : undefined,
     lotteryReward3rd: typeof lotteryReward3rd === "bigint" ? lotteryReward3rd : undefined,
     tokenContractAccount: typeof tokenContractAccount === "string" ? tokenContractAccount : undefined,
-    treasuryAccount: typeof treasuryAccount === "string" ? treasuryAccount : undefined,
   };
 
   response.ready =
@@ -111,14 +103,13 @@ export const useLotteryContractData = (contractName: LotteryBasicContractName = 
     typeof lotteryMaxNumber === "bigint" &&
     typeof lotteryCost === "bigint" &&
     typeof lotteryReward === "bigint" &&
-    typeof tokenContractAccount === "string" &&
-    typeof treasuryAccount === "string";
+    typeof tokenContractAccount === "string";
 
-  if (contractName === "ItimLottery3Digits") {
+  if (contractName === lottery3DigitsContractName) {
     response.ready = response.ready && typeof lotteryReward2nd === "bigint";
   }
 
-  if (contractName === "ItimLottery4Digits") {
+  if (contractName === lottery4DigitsContractName) {
     response.ready = response.ready && typeof lotteryReward2nd === "bigint" && typeof lotteryReward3rd === "bigint";
   }
 
@@ -126,7 +117,7 @@ export const useLotteryContractData = (contractName: LotteryBasicContractName = 
 };
 
 export const useIsLotteryContractAdmin = (
-  contractName: LotteryBasicContractName = "ItimLottery2Digits",
+  contractName: LotteryBasicContractName = lottery2DigitsContractName,
   address?: string,
 ) => {
   const { data: ADMIN_ROLE } = useScaffoldReadContract({

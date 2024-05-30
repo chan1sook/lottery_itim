@@ -62,7 +62,11 @@ export const Digit4LotteryContainer = ({ children, footer }: DetailLotteryContai
   );
 };
 
-export const TwelveNumbersLotteryContainer = ({ children, footer }: DetailLotteryContainerProp) => {
+export const TwelveNumbersLotteryContainer = ({
+  children,
+  footer,
+  roomStr,
+}: DetailLotteryContainerProp & { roomStr?: string }) => {
   return (
     <GameContainer
       icon={
@@ -76,7 +80,7 @@ export const TwelveNumbersLotteryContainer = ({ children, footer }: DetailLotter
       footer={footer}
       countdown={children}
     >
-      12 Numbers Game
+      12 Numbers Game {roomStr}
     </GameContainer>
   );
 };
@@ -94,7 +98,12 @@ export const OddEvenLotteryContainer = ({ children, footer }: DetailLotteryConta
       footer={footer}
       countdown={children}
     >
-      Odd-Even Game
+      <div className="w-full flex flex-col justify-end sm:flex-row sm:items-center">
+        <div className="flex-1 flex flex-col justify-end">
+          <div>Odd-Even Game</div>
+          <div>Room 10,20,50,100,500</div>
+        </div>
+      </div>
     </GameContainer>
   );
 };
