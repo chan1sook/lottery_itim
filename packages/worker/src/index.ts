@@ -3,7 +3,6 @@ import nodeCron from "node-cron";
 import {
   lottery2DigitsFastRestartWithResult,
   lottery2DigitsGetLastestData,
-  lottery2DigitsPreditNextRoll,
 } from "./lottery/digits2";
 import {
   lottery3DigitsFastRestartWithResult,
@@ -166,8 +165,6 @@ const displayArr: Record<string, () => any> = {
 };
 
 (async () => {
-  console.log(lottery2DigitsPreditNextRoll(new Date()));
-
   if ((await lottery2DigitsGetLastestData()).state === "NOT_READY") {
     if (!queueActions.includes(routine2Digits)) {
       queueActions.push(routine2Digits);

@@ -9,7 +9,6 @@ import { toTimestampSec } from "../utils";
 
 dayjs.extend(tz);
 dayjs.extend(utc);
-dayjs.extend(weekday);
 
 export async function lottery3DigitsGetLastestData() {
   const { ItimLottery3Digits } = getContracts();
@@ -56,7 +55,7 @@ export function lottery3DigitsPreditNextRoll(current = new Date()) {
     .second(0)
     .minute(0)
     .hour(0)
-    .weekday(0);
+    .day(1);
   if (dayObj.valueOf() <= current.getTime()) {
     dayObj = dayObj.add(7, "day");
   }

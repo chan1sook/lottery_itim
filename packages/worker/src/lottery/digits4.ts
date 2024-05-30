@@ -52,9 +52,9 @@ export function lottery4DigitsPreditNextRoll(current = new Date()) {
     .second(0)
     .minute(0)
     .hour(0)
-    .day(5);
+    .date(5);
   if (dayObj.valueOf() <= current.getTime()) {
-    dayObj = dayObj.add(1, "month").day(5);
+    dayObj = dayObj.add(1, "month");
   }
   return dayObj.toDate();
 }
